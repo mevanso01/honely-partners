@@ -1,0 +1,16 @@
+{
+  "fonts": {
+    "primary": {
+      "name": "Inter",
+      "weights": [300, 400, 500, 600]
+    }
+  },
+  "colors": {
+    "primary": "#FF9900",
+    "headingColor": "#000000",
+    "backgroundColor": "#FFFFFF",
+    "borderColor": "#334455",
+    "white": "#FFFFFF",
+    "lightGray": "#F8F9FA"
+  }
+}
