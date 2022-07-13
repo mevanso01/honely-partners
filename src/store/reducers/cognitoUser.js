@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { doPatch } from '../../services/http-client'
 import awsConfig from '../../aws-exports'
 import Amplify, { Auth } from 'aws-amplify'
 Amplify.configure(awsConfig)
@@ -6,7 +7,8 @@ Amplify.configure(awsConfig)
 const initialState = {
   isLoggedIn: false,
   confirmationCodeRequested: false,
-  user: null
+  user: null,
+  jwtToken: null
 }
 
 export const cognitoSignIn = (payload) => async (dispatch, getState) => {
@@ -16,6 +18,7 @@ export const cognitoSignIn = (payload) => async (dispatch, getState) => {
     const cognitoUser = await Auth.signIn(username, password)
     if (cognitoUser?.signInUserSession?.idToken) {
       dispatch(setIsLoggedIn(true))
+      dispatch(setJwtToken(cognitoUser?.signInUserSession?.idToken?.jwtToken))
     }
     dispatch(setCognitoUser(cognitoUser))
     return cognitoUser
@@ -30,8 +33,10 @@ export const cognitoCompleteNewPassword = (newPassword) => async (dispatch, getS
     const cognitoUser = await Auth.completeNewPassword(user, newPassword)
     if (cognitoUser?.signInUserSession?.idToken) {
       dispatch(setIsLoggedIn(true))
+      dispatch(setJwtToken(cognitoUser?.signInUserSession?.idToken?.jwtToken))
     }
     dispatch(setCognitoUser(cognitoUser))
+    await doPatch(`partner/update-partner-info`, { 'status': 'CONFIRMED' })
     return cognitoUser
   } catch (error) {
     return Promise.reject(error)
@@ -96,10 +101,13 @@ const cognitoUserSlice = createSlice({
     setCognitoUser: (state, action) => {
       state.user = action.payload
     },
+    setJwtToken: (state, action) => {
+      state.jwtToken = action.payload
+    }
   },
   extraReducers: {}
 })
 
-export const { setIsLoggedIn, setCognitoUser } = cognitoUserSlice.actions
+export const { setIsLoggedIn, setCognitoUser, setJwtToken } = cognitoUserSlice.actions
 
 export default cognitoUserSlice.reducer

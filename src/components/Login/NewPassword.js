@@ -48,7 +48,7 @@ export const NewPassword = () => {
       <FormController>
         <label>New password</label>
         <Input
-          type='text'
+          type='password'
           {
             ...register('newpassword',
             {

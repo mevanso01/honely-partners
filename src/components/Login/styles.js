@@ -12,8 +12,13 @@ export const InnerContainer = styled.div`
   flex-direction: column;
 
   p.description {
-    font-size: 18px;
+    font-size: 14px;
     text-align: center;
+  }
+  @media (min-width: 768px) {
+    p.description {
+      font-size: 18px;
+    }
   }
 `
 export const Header = styled.div`
@@ -41,18 +46,29 @@ export const FormContainer = styled.form`
   justify-content: center;
 
   h1 {
-    font-size: 48px;
+    font-size: 32px;
     margin-top: 0;
-    margin-bottom: 80px;
+    margin-bottom: 30px;
     font-weight: 400;
   }
 
   button {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 700;
-    height: 70px;
+    height: 55px;
     width: 240px;
-    margin-top: 70px;
+    margin-top: 40px;
+  }
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 48px;
+      margin-bottom: 80px;
+    }
+    button {
+      font-size: 24px;
+      height: 70px;
+      margin-top: 70px;
+    }
   }
 `
 export const FormController = styled.div`
@@ -61,11 +77,20 @@ export const FormController = styled.div`
   margin-bottom: 20px;
 
   label {
-    font-size: 18px;
+    font-size: 14px;
     margin: 8px;
   }
   input {
-    min-width: 550px;
+    min-width: 300px;
+  }
+
+  @media (min-width: 768px) {
+    label {
+      font-size: 18px;
+    }
+    input {
+      min-width: 550px;
+    }
   }
 `
 export const ValidationError = styled.p`
