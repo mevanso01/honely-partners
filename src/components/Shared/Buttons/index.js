@@ -154,4 +154,30 @@ export const Button = styled.button`
     }
   `}
 
+  ${({ color }) => color === 'black' && css`
+    display: flex;
+    align-items: center;
+    background: ${props => props.theme.colors.black};
+    color: ${props => props.theme.colors.white};
+    border-color: ${props => props.theme.colors.black};
+    &:hover {
+      background: ${props => darken(0.04, props.theme.colors.black)};
+    }
+    &:active {
+      background: ${props => darken(0.1, props.theme.colors.black)};
+    }
+    ${({ outline }) => outline && css`
+      background: ${props => props.theme.colors.white};
+      color: ${props => props.theme.colors.black};
+      border-color: ${props => props.theme.colors.black};
+      &:active {
+        color: ${props => props.theme.colors.white};
+        background: ${props => props.theme.colors.black};
+      }
+      &:hover {
+        background: ${props => darken(0.07, props.theme.colors.black)};
+        color: ${props => props.theme.colors.white};
+      }
+    `}
+  `}
 `

@@ -1,7 +1,19 @@
 import React from 'react'
+import { Sidebar } from './Sidebar'
+import { ClientsPortal } from './ClientsPortal'
+
+import {
+  Container,
+  MainContent
+} from './styles'
 
 export const ClientsList = () => {
   return (
-    <h1>Clients list</h1>
+    <Container>
+      <Sidebar />
+      <MainContent>
+        <ClientsPortal />
+      </MainContent>
+    </Container>
   )
 }

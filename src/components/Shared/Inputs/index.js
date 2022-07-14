@@ -15,10 +15,10 @@ export const Input = styled.input`
   `}
   &::placeholder,
   &::-webkit-input-placeholder {
-    color: #DBDCDB;
+    color: rgba(0, 0, 0, 0.66);
   }
   &:-ms-input-placeholder {
-    color: #DBDCDB;
+    color: rgba(0, 0, 0, 0.66);
   }
   &::-ms-reveal{
     display: none;
