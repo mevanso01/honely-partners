@@ -14,6 +14,7 @@ import { Header } from './components/Header'
 // pages
 import { Login } from './pages/Login'
 import { ClientsList } from './pages/ClientsList'
+import { ClientDetail } from './pages/ClientDetail'
 import { PageNotFound } from './pages/PageNotFound'
 
 export const App = () => {
@@ -46,6 +47,7 @@ export const App = () => {
         <Route path='/' element={auth ? <Navigate to='/clients' /> : <Navigate to='/login' />} />
         <Route path='/login' element={auth ? <Navigate to='/clients' /> : <Login/>}></Route>
         <Route path='/clients' element={auth ? <ClientsList />: <Navigate to='/login' />}></Route>
+        <Route path='/clients/:clientId' element={auth ? <ClientDetail />: <Navigate to='/login' />}></Route>
         <Route path='*' element={<PageNotFound/>}></Route>
       </Routes>
 
