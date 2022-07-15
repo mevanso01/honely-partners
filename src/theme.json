@@ -9,9 +9,11 @@
     "primary": "#FF9900",
     "headingColor": "#000000",
     "backgroundColor": "#FFFFFF",
+    "backgroundGray100": "#F4F4F4",
     "borderColor": "#A8A8A8",
     "white": "#FFFFFF",
     "black": "#000000",
-    "lightGray": "#F8F9FA"
+    "lightGray": "#F8F9FA",
+    "lightRed": "#FF4141"
   }
 }

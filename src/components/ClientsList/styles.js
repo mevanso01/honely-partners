@@ -6,9 +6,10 @@ export const Container = styled.div`
   
   @media (min-width: 768px) {
     flex-direction: row;
-    min-height: calc(100vh - 180px);
+    height: calc(100vh - 180px);
   }
 `
 export const MainContent = styled.div`
   flex: 1;
+  overflow: auto;
 `

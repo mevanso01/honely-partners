@@ -110,7 +110,6 @@ export const Login = () => {
             {loginState.loading ? 'Loading...' : 'Log in'}
           </Button>
         </FormContainer>
-        {/* <button onClick={handleChangePassword}>changePassword</button> */}
         <p className='description'>For your credentials please contact Honely support</p>
       </InnerContainer>
 

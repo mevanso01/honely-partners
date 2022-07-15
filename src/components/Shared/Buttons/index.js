@@ -58,7 +58,7 @@ export const IconButton = styled.button`
     &:hover {
       background-color: #1507260a;
       > svg {
-        color: ${props => props.theme.colors.primary};
+        color: ${props => darken(0.04, props.theme.colors.primary)};
       }
     }
   `}

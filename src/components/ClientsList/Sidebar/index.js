@@ -14,7 +14,7 @@ export const Sidebar = () => {
   return (
     <SidebarContainer>
       <MenuItemWrapper
-        active={location.pathname === '/clients'}
+        active={location.pathname.includes('/clients')}
         onClick={() => navigate('/clients')}
       >
         <MenuItem>Clients</MenuItem>

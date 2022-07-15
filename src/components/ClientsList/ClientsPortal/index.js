@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Alert, Button, Input, Pagination } from '../../Shared'
+import { useNavigate } from 'react-router-dom'
+import { Alert, Button, Input, Modal, Pagination } from '../../Shared'
 import Skeleton from 'react-loading-skeleton'
 import IosSearch from '@meronex/icons/ios/IosSearch'
 import { doGet } from '../../../services/http-client'
 import { useSelector } from 'react-redux'
+import { SubUserForm } from '../SubUserForm'
 
 import {
   Container,
@@ -18,30 +20,42 @@ import {
 } from './styles'
 
 export const ClientsPortal = () => {
+  const navigate = useNavigate()
   const cognitoUser = useSelector(state => state.cognitoUser)
   const auth = cognitoUser?.isLoggedIn
   const [alertState, setAlertState] = useState({ open: false, content: [] })
-  const [subUsers, setSubUsers] = useState({ loading: true, result: [], error: null })
+  const [subUsersState, setSubUsersState] = useState({ loading: true, result: [], error: null })
+  const [openAddForm, setOpenAddForm] = useState(false)
 
   const getSubUsers = async (page = 0) => {
     try {
-      setSubUsers({ ...subUsers, loading: true })
+      setSubUsersState({ ...subUsersState, loading: true })
       const response = await doGet('partner/users', { limit: 5, offset: page })
       if (response?.error) {
         throw response.error
       }
-      setSubUsers({
+      setSubUsersState({
         loading: false,
         result: response.data,
         error: null
       })
     } catch (error) {
-      setSubUsers({ ...subUsers, loading: false, error: error.message })
+      setSubUsersState({ ...subUsersState, loading: false, error: error.message })
     }
   }
 
   const handleChangePage = (page) => {
     console.log(page)
+  }
+
+  const onAddUserSuccess = (newUser) => {
+    // const updatedUsers = [...subUsersState.result, newUser]
+    // setSubUsersState({
+    //   ...subUsersState,
+    //   result: updatedUsers
+    // })
+    // dispatch(setSubUsers(updatedUsers))
+    setOpenAddForm(false)
   }
   
   useEffect(() => {
@@ -51,10 +65,10 @@ export const ClientsPortal = () => {
   }, [auth])
   
   useEffect(() => {
-    if (subUsers.error) {
-      setAlertState({ open: true, content: subUsers.error })
+    if (subUsersState.error) {
+      setAlertState({ open: true, content: subUsersState.error })
     }
-  }, [subUsers.error])
+  }, [subUsersState.error])
 
   return (
     <Container>
@@ -64,6 +78,7 @@ export const ClientsPortal = () => {
           <Button
             outline
             color='black'
+            onClick={() => setOpenAddForm(true)}
           >
             + Add new
           </Button>
@@ -94,7 +109,7 @@ export const ClientsPortal = () => {
               </tr>
             </thead>
             <tbody>
-              {subUsers.loading ? (
+              {subUsersState.loading ? (
                 [...Array(5).keys()].map(index => (
                   <ClientRow key={index}>
                     <td><Skeleton width={80} height={17} /></td>
@@ -104,9 +119,10 @@ export const ClientsPortal = () => {
                   </ClientRow>
                 ))
               ) : (
-                subUsers.result.map(user => (
+                subUsersState.result.map(user => (
                   <ClientRow
                     key={user.user_id}
+                    onClick={() => navigate(`/clients/${user.user_id}`)}
                   >
                     <td>{user?.company_name}</td>
                     <td>{user?.company_url}</td>
@@ -136,6 +152,14 @@ export const ClientsPortal = () => {
         onAccept={() => setAlertState({ open: false, content: [] })}
         closeOnBackdrop={false}
       />
+      <Modal
+        open={openAddForm}
+        onClose={() => setOpenAddForm(false)}
+      >
+        <SubUserForm
+          onAddUserSuccess={() => onAddUserSuccess()}
+        />
+      </Modal>
     </Container>
   )
 }
