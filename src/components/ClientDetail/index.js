@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Sidebar } from '../ClientsList/Sidebar'
 import { Container, MainContent } from '../ClientsList/styles'
 import FiChevronRight from '@meronex/icons/fi/FiChevronRight'
@@ -23,6 +24,8 @@ export const ClientDetail = (props) => {
   const {
     clientId
   } = props
+
+  const navigate = useNavigate()
 
   const copyToClipboard = () => {
     const copyText = `<script src="https://developers.honely.com/widget/load-script?api-key=test-601253ce-c99f-11ec-a950-0ebb94ef5085"></script>`
@@ -58,6 +61,7 @@ export const ClientDetail = (props) => {
               </WidgetCodeCard>
               <Button
                 color='primary'
+                onClick={() => navigate(`/clients/${clientId}/custom-widget`)}
               >
                 Customize Widget
               </Button>

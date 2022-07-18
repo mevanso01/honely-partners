@@ -15,6 +15,7 @@ import { Header } from './components/Header'
 import { Login } from './pages/Login'
 import { ClientsList } from './pages/ClientsList'
 import { ClientDetail } from './pages/ClientDetail'
+import { CustomizeWidget } from './pages/CustomizeWidget'
 import { PageNotFound } from './pages/PageNotFound'
 
 export const App = () => {
@@ -48,6 +49,7 @@ export const App = () => {
         <Route path='/login' element={auth ? <Navigate to='/clients' /> : <Login/>}></Route>
         <Route path='/clients' element={auth ? <ClientsList />: <Navigate to='/login' />}></Route>
         <Route path='/clients/:clientId' element={auth ? <ClientDetail />: <Navigate to='/login' />}></Route>
+        <Route path='/clients/:clientId/custom-widget' element={auth ? <CustomizeWidget />: <Navigate to='/login' />}></Route>
         <Route path='*' element={<PageNotFound/>}></Route>
       </Routes>
 
