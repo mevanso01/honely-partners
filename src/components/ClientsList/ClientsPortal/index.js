@@ -25,28 +25,42 @@ export const ClientsPortal = () => {
   const auth = cognitoUser?.isLoggedIn
   const [alertState, setAlertState] = useState({ open: false, content: [] })
   const [subUsersState, setSubUsersState] = useState({ loading: true, result: [], error: null })
+  const [pagination, setPagination] = useState({ currentPage: 1, pageSize: 5, total: null })
   const [openAddForm, setOpenAddForm] = useState(false)
+  const [usersLoaded, setUsersLoaded] = useState(false)
 
-  const getSubUsers = async (page = 0) => {
+  const getSubUsers = async (page = 1) => {
     try {
       setSubUsersState({ ...subUsersState, loading: true })
-      const response = await doGet('partner/users', { limit: 5, offset: page })
+      const response = await doGet('partner/users', { limit: pagination.pageSize, offset: (page - 1) * pagination.pageSize })
       if (response?.error) {
         throw response.error
       }
       setSubUsersState({
         loading: false,
-        result: response.data,
+        result: response.data?.users,
         error: null
       })
+      setPagination({
+        ...pagination,
+        currentPage: page,
+        total: response.data?.total_users || 0
+      })
+      setUsersLoaded(true)
     } catch (error) {
       setSubUsersState({ ...subUsersState, loading: false, error: error.message })
     }
   }
 
   const handleChangePage = (page) => {
-    console.log(page)
+    setPagination({
+      ...pagination,
+      currentPage: page
+    })
+    getSubUsers(page)
   }
+
+  console.log(pagination)
 
   const onAddUserSuccess = (newUser) => {
     // const updatedUsers = [...subUsersState.result, newUser]
@@ -126,7 +140,7 @@ export const ClientsPortal = () => {
                   >
                     <td>{user?.company_name}</td>
                     <td>{user?.company_url}</td>
-                    <td></td>
+                    <td>{user?.signed_up_date}</td>
                     <td className='status'>{user?.status?.toLowerCase()}</td>
                   </ClientRow>
                 ))
@@ -134,13 +148,15 @@ export const ClientsPortal = () => {
             </tbody>
           </ClientsTable>
         </TableWrapper>
-        <PaginationWrapper>
-          <Pagination
-            currentPage={1}
-            totalPages={10}
-            handleChangePage={handleChangePage}
-          />
-        </PaginationWrapper>
+        {usersLoaded && (
+          <PaginationWrapper>
+            <Pagination
+              currentPage={pagination.currentPage}
+              totalPages={Math.ceil(pagination.total / pagination.pageSize)}
+              handleChangePage={handleChangePage}
+            />
+          </PaginationWrapper>
+        )}
       </ClientsListContainer>
       <Alert
         title='Error'
