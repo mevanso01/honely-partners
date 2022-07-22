@@ -93,7 +93,6 @@ export const SubUserForm = (props) => {
             {
               ...register('phone-number',
               {
-                required: { value: true, message: 'The field phone number is required' },
                 minLength: { value: 10, message: 'Phone number must contain 10 digits' },
                 maxLength: { value: 10, message: 'Invalid Phone number' },
               })
