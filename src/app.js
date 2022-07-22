@@ -16,6 +16,7 @@ import { Login } from './pages/Login'
 import { ClientsList } from './pages/ClientsList'
 import { ClientDetail } from './pages/ClientDetail'
 import { CustomizeWidget } from './pages/CustomizeWidget'
+import { Billing } from './pages/Billing'
 import { PageNotFound } from './pages/PageNotFound'
 
 export const App = () => {
@@ -50,6 +51,7 @@ export const App = () => {
         <Route path='/clients' element={auth ? <ClientsList />: <Navigate to='/login' />}></Route>
         <Route path='/clients/:clientId' element={auth ? <ClientDetail />: <Navigate to='/login' />}></Route>
         <Route path='/clients/:clientId/custom-widget' element={auth ? <CustomizeWidget />: <Navigate to='/login' />}></Route>
+        <Route path='/billing' element={auth ? <Billing />: <Navigate to='/login' />}></Route>
         <Route path='*' element={<PageNotFound/>}></Route>
       </Routes>
 

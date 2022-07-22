@@ -21,7 +21,7 @@ export const Sidebar = () => {
       </MenuItemWrapper>
       <MenuItemWrapper
         active={location.pathname === '/billing'}
-        // onClick={() => navigate('/billing')}
+        onClick={() => navigate('/billing')}
       >
         <MenuItem>Billing</MenuItem>
       </MenuItemWrapper>
