@@ -90,7 +90,9 @@ export const ClientDetail = (props) => {
                 <MenuItem>Customize WIdget</MenuItem>
               </MenuItemWrapper>
               <MenuItemWrapper>
-                <MenuItem>Account Information</MenuItem>
+                <MenuItem
+                  onClick={() => navigate('/account-management')}
+                >Account Information</MenuItem>
               </MenuItemWrapper>
             </SubMenus>
             <ActionButtonGroup>

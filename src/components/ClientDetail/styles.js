@@ -118,6 +118,11 @@ export const MenuItemWrapper = styled.div`
       color: ${props => props.theme.colors.primary};
     }
   `}
+  &:hover {
+    span {
+      color: ${props => props.theme.colors.primary};
+    }
+  }
 `
 export const MenuItem = styled.span`
   display: block;
@@ -125,6 +130,7 @@ export const MenuItem = styled.span`
   font-size: 18px;
   line-height: 32px;
   margin: 0 10px;
+
 `
 export const ActionButtonGroup = styled.div`
   button {

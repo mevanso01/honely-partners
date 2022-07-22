@@ -17,7 +17,7 @@ export const AgentImageContainer = styled.div`
   align-items: center;
 `
 export const AgentImageWrapper = styled.div`
-  width: 55px;
+  width: 160px;
   height: 55px;
   margin-bottom: 8px;
   img {
@@ -50,4 +50,7 @@ export const ButtonLink = styled.span`
   cursor: pointer;
   font-weight: 500;
   font-size: 14px;
+  &:hover {
+    color: ${props => props.theme.colors.primary};
+  }
 `

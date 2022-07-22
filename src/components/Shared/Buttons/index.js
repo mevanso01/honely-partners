@@ -179,5 +179,18 @@ export const Button = styled.button`
         color: ${props => props.theme.colors.white};
       }
     `}
+    ${({ naked }) => naked && css`
+      background: transparent;
+      color: ${props => props.theme.colors.black};
+      border: none;
+      &:active {
+        color: ${props => props.theme.colors.black};
+        background: ${props => darken(0.1, props.theme.colors.white)};
+      }
+      &:hover {
+        background: ${props => darken(0.07, props.theme.colors.white)};
+        color: ${props => props.theme.colors.black};
+      }
+    `}
   `}
 `

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useTheme } from 'styled-components'
 import FaUserAlt from '@meronex/icons/fa/FaUserAlt'
@@ -13,6 +14,7 @@ import {
 } from './styles'
 
 export const Header = () => {
+  const navigate = useNavigate()
   const partner = useSelector(state => state.partner)
   const theme = useTheme()
   return (
@@ -29,7 +31,11 @@ export const Header = () => {
             <img src={theme.images.logo} alt='logo' />
           </PowerdBy>
         </AgentImageContainer>
-        <ButtonLink>Account Management</ButtonLink>
+        <ButtonLink
+          onClick={() => navigate('/account-management')}
+        >
+          Account Management
+        </ButtonLink>
       </InnerContainer>
     </Container>
   )
