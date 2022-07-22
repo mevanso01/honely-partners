@@ -60,15 +60,8 @@ export const ClientsPortal = () => {
     getSubUsers(page)
   }
 
-  console.log(pagination)
-
-  const onAddUserSuccess = (newUser) => {
-    // const updatedUsers = [...subUsersState.result, newUser]
-    // setSubUsersState({
-    //   ...subUsersState,
-    //   result: updatedUsers
-    // })
-    // dispatch(setSubUsers(updatedUsers))
+  const onAddUserSuccess = () => {
+    getSubUsers(pagination.currentPage)
     setOpenAddForm(false)
   }
   
