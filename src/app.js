@@ -50,8 +50,8 @@ export const App = () => {
         <Route path='/' element={auth ? <Navigate to='/clients' /> : <Navigate to='/login' />} />
         <Route path='/login' element={auth ? <Navigate to='/clients' /> : <Login/>}></Route>
         <Route path='/clients' element={auth ? <ClientsList />: <Navigate to='/login' />}></Route>
-        <Route path='/clients/:clientId' element={auth ? <ClientDetail />: <Navigate to='/login' />}></Route>
-        <Route path='/clients/:clientId/custom-widget' element={auth ? <CustomizeWidget />: <Navigate to='/login' />}></Route>
+        <Route path='/clients/:apiKey' element={auth ? <ClientDetail />: <Navigate to='/login' />}></Route>
+        <Route path='/clients/:apiKey/custom-widget' element={auth ? <CustomizeWidget />: <Navigate to='/login' />}></Route>
         <Route path='/billing' element={auth ? <Billing />: <Navigate to='/login' />}></Route>
         <Route path='/account-management' element={auth ? <AccountManagement />: <Navigate to='/login' />}></Route>
         <Route path='*' element={<PageNotFound/>}></Route>

@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom'
 import { ClientDetail as ClientDetailController } from '../../components/ClientDetail'
 
 export const ClientDetail = (props) => {
-  const { clientId } = useParams()
+  const { apiKey } = useParams()
   const clientDetailProps = {
     ...props,
-    clientId
+    apiKey
   }
 
   return (

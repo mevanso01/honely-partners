@@ -129,7 +129,7 @@ export const ClientsPortal = () => {
                 subUsersState.result.map(user => (
                   <ClientRow
                     key={user.user_id}
-                    onClick={() => navigate(`/clients/${user.user_id}`)}
+                    onClick={() => navigate(`/clients/${user.api_key}`)}
                   >
                     <td>{user?.company_name}</td>
                     <td>{user?.company_url}</td>

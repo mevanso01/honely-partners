@@ -5,9 +5,11 @@ const base_url = 'https://developers.honely.com/';
 // PROD
 const failureMsg = 'Something went wrong. Please try again.';
 
-export const doPost = (url, data, onSuccess, onFail, isPut) => {
+export const doPost = (url, data, apiKey, onSuccess, onFail, isPut) => {
   const state = store.getState();
   const { jwtToken } = state.cognitoUser
+  let xApiKey = apiKey || ""
+
   return fetch(base_url + url, {
       method: isPut ? 'PUT' : 'POST',
       headers: {
@@ -15,6 +17,7 @@ export const doPost = (url, data, onSuccess, onFail, isPut) => {
         'Content-Type': 'application/json',
         'Origin': '',
         'Authorization': `Bearer ${jwtToken}`,
+        'X-API-KEY': xApiKey
       },
       body: JSON.stringify(data),
     })
@@ -95,9 +98,10 @@ export const doDelete = (url, data, onSuccess, onFail) => {
     });
 }
 
-export const doGet = (url, data, onSuccess, onFail) => {
+export const doGet = (url, data, apiKey, onSuccess, onFail) => {
   const state = store.getState();
   const { jwtToken } = state.cognitoUser
+  let xApiKey = apiKey || ""
   let param = "";
   for (var key in data) {
     if (param == "") {
@@ -114,6 +118,7 @@ export const doGet = (url, data, onSuccess, onFail) => {
       headers: {
         'Origin': '',
         'Authorization': `Bearer ${jwtToken}`,
+        'X-API-KEY': xApiKey
       },
     })
     .then((response) => response.json())
