@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom'
 import { CustomizeWidget as CustomizeWidgetController } from '../../components/CustomizeWidget'
 
 export const CustomizeWidget = (props) => {
-  const { clientId } = useParams()
+  const { apiKey } = useParams()
   const customizeWidgetProps = {
     ...props,
-    clientId
+    apiKey
   }
 
   return (

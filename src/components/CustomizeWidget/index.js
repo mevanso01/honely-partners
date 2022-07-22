@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { TrinitySpinner } from 'loading-animations-react'
 import { Container, MainContent } from '../ClientsList/styles'
 import { Sidebar } from '../ClientsList/Sidebar'
-import { useSelector } from 'react-redux'
-import { doGet } from '../../services/http-client'
+import { doGet, doPost } from '../../services/http-client'
 
 import './customizeWidget.css'
 import ColorPickerItem from './ColorPickerItem'
@@ -14,12 +12,13 @@ import PollQuestion from './PollQuestion'
 import WidgetIconPreview from './WidgetIconPreview'
 import InputFormPreview from './InputFormPreview'
 import { ResultPagePreview } from './ResultPagePreview'
-import widgetData from './widget.json'
 import MdCheckBox from '@meronex/icons/md/MdCheckBox'
 import MdCheckBoxOutlineBlank from '@meronex/icons/md/MdCheckBoxOutlineBlank'
 
 export const CustomizeWidget = (props) => {
-  const { jwtToken } = useSelector(state => state.cognitoUser)
+  const{
+    apiKey
+  } = props
   const [widgetSettings, setWidgetSettings] = useState({ loading: true, loadingText: 'Loading...', settings: {}, error: null })
   const [widgetConfig, setWidgetConfig] = useState({})
   const fonts = ['Poppins', 'Times New Roman', 'Arial']
@@ -41,19 +40,17 @@ export const CustomizeWidget = (props) => {
     })
   }
 
-  const handleUpdateWidget = () => {
-    const config = {
-      headers: {
-        'Authorization': 'Bearer ' + jwtToken
+  const handleUpdateWidget = async () => {
+    try {
+      setWidgetSettings({
+        ...widgetSettings,
+        loading: true,
+        loadingText: 'Saving...'
+      })
+      const response = await doPost('widget/settings', widgetConfig, apiKey)
+      if (response?.error) {
+        throw response.error
       }
-    }
-    setWidgetSettings({
-      ...widgetSettings,
-      loading: true,
-      loadingText: 'Saving...'
-    })
-    axios.post('https://developers.honely.com/widget/settings', widgetConfig, config)
-    .then(() => {
       setWidgetSettings({
         loading: false,
         settings: {
@@ -62,18 +59,13 @@ export const CustomizeWidget = (props) => {
         },
         error: null
       })
-    })
-    .catch(error => {
-      if (error.message === 'Request failed with status code 401') {
-        props.doSignOut()
-      } else {
-        setWidgetSettings({
-          ...widgetSettings,
-          loading: false,
-          error: error.message
-        })
-      }
-    })
+    } catch (error) {
+      setWidgetSettings({
+        ...widgetSettings,
+        loading: false,
+        error: error.message
+      })
+    }
   }
 
   const filterResponse = (defaultData) => {
@@ -96,48 +88,35 @@ export const CustomizeWidget = (props) => {
     return defaultData
   }
 
-  useEffect(() => {
-    setWidgetConfig(widgetData.data.current)
-    setWidgetSettings({
-      ...widgetSettings,
-      loading: false,
-      settings: {
-        current: widgetData.data.current,
-        'default-light': filterResponse(widgetData.data['default-light']),
-        'default-dark': filterResponse(widgetData.data['default-dark'])
+  const getWidgetSettings = async () => {
+    try {
+      const response = await doGet('widget/settings', {}, apiKey)
+      if (response?.error) {
+        throw response.error
       }
-    })
-    
-    // const config = {
-    //   headers: {
-    //     'Authorization': 'Bearer ' + jwtToken
-    //   }
-    // }
-    // axios.get('https://developers.honely.com/widget/settings', config)
-    // .then(response => {
-    //   setWidgetConfig(response.data.data.current)
-    //   setWidgetSettings({
-    //     ...widgetSettings,
-    //     loading: false,
-    //     settings: {
-    //       current: response.data.data.current,
-    //       'default-light': filterResponse(response.data.data['default-light']),
-    //       'default-dark': filterResponse(response.data.data['default-dark'])
-    //     }
-    //   })
-    // })
-    // .catch(error => {
-    //   if (error.message === 'Request failed with status code 401') {
-    //     props.doSignOut()
-    //   } else {
-    //     setWidgetSettings({
-    //       ...widgetSettings,
-    //       loading: false,
-    //       error: error.message
-    //     })
-    //   }
-    // })
-  }, [])
+      setWidgetConfig(response.data.data.current)
+      setWidgetSettings({
+        ...widgetSettings,
+        loading: false,
+        settings: {
+          current: response.data.data.current,
+          'default-light': filterResponse(response.data.data['default-light']),
+          'default-dark': filterResponse(response.data.data['default-dark'])
+        }
+      })
+
+    } catch (error) {
+      setWidgetSettings({
+        ...widgetSettings,
+        loading: false,
+        error: error.message
+      })
+    }
+  }
+
+  useEffect(() => {
+    getWidgetSettings()
+  }, [apiKey])
 
   return (
     <Container>
