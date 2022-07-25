@@ -1,8 +1,11 @@
-import React, { useState, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useRef, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { DashboardLayout } from '../Layout/DashboardLayout'
-import { Button, Input } from '../Shared'
+import { Alert, Button, Input, Modal } from '../Shared'
 import MdcContentCopy from '@meronex/icons/mdc/MdcContentCopy'
+import { doPatch } from '../../services/http-client'
+import { useToast, ToastType } from '../../contexts/ToastContext'
+import { ChangePassword } from './ChangePassword'
 
 import {
   Container,
@@ -17,8 +20,15 @@ import {
 } from './styles'
 
 export const AccountManagement = () => {
+  const dispatch = useDispatch()
   const partner = useSelector(state => state.partner)
+  const [, { showToast }] = useToast()
+
   const [photoState, setPhotoState] = useState(null)
+  const [compoanyLogoData, setCompanyLogoData] = useState(null)
+  const [actionState, setActionState] = useState({ loading: false, error: null })
+  const [alertState, setAlertState] = useState({ open: false, content: [] })
+  const [openModal, setOpenModal] = useState(false)
 
   const inputRef = useRef()
   const handleFiles = (e) => {
@@ -32,6 +42,7 @@ export const AccountManagement = () => {
         reader.readAsDataURL(files[0])
         reader.onload = () => {
           setPhotoState(reader.result)
+          setCompanyLogoData(reader.result.replace(/^data:image\/[a-z]+;base64,/, ""))
         }
       }
     }
@@ -40,6 +51,36 @@ export const AccountManagement = () => {
     const copyText = 'test'
     navigator.clipboard.writeText(copyText)
   }
+
+  const uploadImage = async () => {
+    try {
+      showToast(ToastType.Info, 'Loading')
+      setActionState({ loading: true, error: null })
+      const response = await doPatch('partner/update-partner-info', { logo: compoanyLogoData })
+      if (response?.error) {
+        throw response.error
+      }
+      setActionState({
+        loading: false,
+        error: null
+      })
+      setCompanyLogoData(null)
+      showToast(ToastType.Success, 'Uploaded')
+    } catch (error) {
+      setActionState({
+        loading: false,
+        error: error.message
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (!actionState.error) return
+    setAlertState({
+      open: true,
+      content: actionState.error
+    })
+  }, [actionState.error])
 
   return (
     <DashboardLayout>
@@ -53,15 +94,15 @@ export const AccountManagement = () => {
             </InfoItem>
             <InfoItem>
               <label>Organization</label>
-              <p>Reality Group</p>
+              <p>{partner.info?.company_name}</p>
             </InfoItem>
             <InfoItem>
               <label>Website</label>
-              <p>myrealtor.com</p>
+              <p>{partner.info?.company_url}</p>
             </InfoItem>
             <InfoItem>
               <label>Email</label>
-              <p>name@email.com</p>
+              <p>{partner.info?.email}</p>
             </InfoItem>
             <InfoItem>
               <label>Password</label>
@@ -70,13 +111,16 @@ export const AccountManagement = () => {
             <Button
               outline
               color='black'
+              onClick={() => setOpenModal(true)}
             >
               Reset Password
             </Button>
           </ManagementContainer>
           <LogoContainer>
             <h1>Company Logo</h1>
-            <LogoWrapper>
+            <LogoWrapper
+              onClick={() => inputRef?.current?.click()}
+            >
               <img src={photoState || partner.info?.image_url} alt='' />
             </LogoWrapper>
             <p>Image should fit in 190 x 45 px dimensions.</p>
@@ -90,7 +134,8 @@ export const AccountManagement = () => {
               <Button
                 outline
                 color='black'
-                onClick={() => inputRef?.current?.click()}
+                disabled={!compoanyLogoData}
+                onClick={() => uploadImage()}
               >
                 Upload Image
               </Button>
@@ -104,7 +149,7 @@ export const AccountManagement = () => {
             <label>Cliend ID</label>
             <div>
               <Input
-                defaultValue='XIXIXIJXCIJXCI'
+                defaultValue={partner.info?.app_client_id}
               />
               <Button
                 color='black'
@@ -122,7 +167,7 @@ export const AccountManagement = () => {
             <div>
               <Input
                 type='password'
-                defaultValue='*************************'
+                defaultValue={partner.info?.app_client_secret}
               />
               <Button
                 color='black'
@@ -138,6 +183,26 @@ export const AccountManagement = () => {
           </CredentialItem>
         </IntegrationCredentialsContainer>
       </Container>
+      <Modal
+        width='700px'
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+      >
+        <ChangePassword
+          setActionState={setActionState}
+          onClose={() => setOpenModal(false)}
+        />
+      </Modal>
+      <Alert
+        title='Error'
+        width='700px'
+        content={alertState.content}
+        acceptText={'Accept'}
+        open={alertState.open}
+        onClose={() => setAlertState({ open: false, content: [] })}
+        onAccept={() => setAlertState({ open: false, content: [] })}
+        closeOnBackdrop={false}
+      />
     </DashboardLayout>
   )
 }

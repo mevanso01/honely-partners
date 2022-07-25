@@ -32,7 +32,7 @@ export const App = () => {
       if (response?.error) {
         throw response.error
       }
-      dispatch(setPartner(response?.data[0]))
+      dispatch(setPartner(response?.data))
     } catch (error) {
       setAlertState({ open: true, content: error.message })
     }

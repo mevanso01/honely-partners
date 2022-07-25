@@ -23,7 +23,7 @@ export const Header = () => {
         <AgentImageContainer>
           <AgentImageWrapper>
             {partner.info?.image_url ? (
-              <img src={partner.info?.image_url} alt='' />
+              <img src={partner.info?.image_url + '?random_number=' + new Date().getTime()} alt='' />
             ) : <FaUserAlt />}
           </AgentImageWrapper>
           <PowerdBy>

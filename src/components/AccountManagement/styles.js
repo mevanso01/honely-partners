@@ -90,6 +90,7 @@ export const LogoWrapper = styled.div`
   width: 300px;
   height: 70px;
   background: #D9D9D9;
+  cursor: pointer;
   img {
     width: 100%;
     height: 100%;
