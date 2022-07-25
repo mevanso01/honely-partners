@@ -5,8 +5,10 @@ import { Container, MainContent } from '../ClientsList/styles'
 import FiChevronRight from '@meronex/icons/fi/FiChevronRight'
 import { Button, IconButton } from '../Shared'
 import MdcContentCopy from '@meronex/icons/mdc/MdcContentCopy'
-import { doGet } from '../../services/http-client'
+import { doGet, doPatch, doPost } from '../../services/http-client'
 import Skeleton from 'react-loading-skeleton'
+import { Alert } from '../Shared'
+import { useToast, ToastType } from '../../contexts/ToastContext'
 
 import {
   ClientDetailContainer,
@@ -28,7 +30,10 @@ export const ClientDetail = (props) => {
   } = props
 
   const navigate = useNavigate()
+  const [, { showToast }] = useToast()
   const [clientState, setClientState] = useState({ result: null, loading: true, error: null })
+  const [actionState, setActionState] = useState({ loading: false, error: null })
+  const [alertState, setAlertState] = useState({ open: false, content: [] })
 
   const copyToClipboard = () => {
     const copyText = `<script src="https://developers.honely.com/widget/load-script?api-key=test-601253ce-c99f-11ec-a950-0ebb94ef5085"></script>`
@@ -58,6 +63,35 @@ export const ClientDetail = (props) => {
       })
     }
   }
+
+  const updateClient = async (payload) => {
+    try {
+      showToast(ToastType.Info, 'Loading')
+      setActionState({ ...actionState, loading: false })
+      const response = await doPatch('user', payload, apiKey)
+      if (response?.error) {
+        throw response.error
+      }
+      setActionState({
+        loading: false,
+        error: null
+      })
+      showToast(ToastType.Success, 'Updated')
+    } catch (error) {
+      setActionState({
+        loading: false,
+        error: error.message
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (!actionState.error) return
+    setAlertState({
+      open: true,
+      content: actionState.error
+    })
+  }, [actionState.error])
 
   useEffect(() => {
     getClient()
@@ -122,8 +156,10 @@ export const ClientDetail = (props) => {
               </APIKeyCard>
               <Button
                 color='primary'
+                onClick={() => updateClient({ 'api-key': 'REPLACE' })}
+                disabled={actionState.loading}
               >
-                Replace API key
+                Replace API key                
               </Button>
             </DetailSection>
           </DetailWrapper>
@@ -142,16 +178,32 @@ export const ClientDetail = (props) => {
               <Button
                 outline
                 color='black'
+                disabled={actionState.loading}
+                onClick={() => updateClient({ status: 'INACTIVE' })}
               >
                 Deactivate Client
               </Button>
-              <Button className='remove'>
+              <Button
+                className='remove'
+                disabled={actionState.loading}
+                onClick={() => updateClient({ status: 'DELETED' })}
+              >
                 Remove Client
               </Button>
             </ActionButtonGroup>
           </ActionSidebar>
         </ClientDetailContainer>
       </MainContent>
+      <Alert
+        title='Error'
+        width='700px'
+        content={alertState.content}
+        acceptText={'Accept'}
+        open={alertState.open}
+        onClose={() => setAlertState({ open: false, content: [] })}
+        onAccept={() => setAlertState({ open: false, content: [] })}
+        closeOnBackdrop={false}
+      />
     </Container>
   )
 }

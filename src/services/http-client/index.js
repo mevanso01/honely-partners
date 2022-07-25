@@ -49,9 +49,10 @@ export const doPost = (url, data, apiKey, onSuccess, onFail, isPut) => {
     });
 }
 
-export const doPatch = (url, data, onSuccess, onFail) => {
+export const doPatch = (url, data, apiKey, onSuccess, onFail) => {
   const state = store.getState();
   const { jwtToken } = state.cognitoUser
+  let xApiKey = apiKey || ""
   return fetch(base_url + url, {
       method: 'PATCH',
       headers: {
@@ -59,6 +60,7 @@ export const doPatch = (url, data, onSuccess, onFail) => {
         'Content-Type': 'application/json',
         'Origin': '',
         'Authorization': `Bearer ${jwtToken}`,
+        'X-API-KEY': xApiKey
       },
       body: JSON.stringify(data),
     })
@@ -70,7 +72,7 @@ export const doPatch = (url, data, onSuccess, onFail) => {
       if (expiredTokenMsgs.includes(response?.error?.message)) {
         try {
           await store.dispatch(cognitoRefreshSession())
-          response = await doPatch(url, data, onSuccess, onFail)
+          response = await doPatch(url, data, apiKey, onSuccess, onFail)
           !onSuccess || onSuccess(response);
         } catch (error) {
           throw error

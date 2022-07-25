@@ -3,6 +3,7 @@ import { Confirm, Alert } from './Confirm'
 import { Input, TextArea } from './Inputs'
 import { Modal } from './Modal'
 import { Pagination } from './Pagination'
+import { Toast } from './Toast'
 
 export {
   Alert,
@@ -12,5 +13,6 @@ export {
   Input,
   TextArea,
   Modal,
-  Pagination
+  Pagination,
+  Toast
 }

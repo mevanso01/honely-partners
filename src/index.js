@@ -5,7 +5,10 @@ import { store, persistor } from './store/configureStore'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Router } from './router'
 import theme from './theme.json'
+import { ToastProvider } from './contexts/ToastContext'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { Toast } from './components/Shared'
+
 
 /**
  * Theme images
@@ -28,9 +31,12 @@ const RouteApp = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider theme={theme}>
-          <Router />
-        </ThemeProvider>
+        <ToastProvider>
+          <ThemeProvider theme={theme}>
+            <Router />
+            <Toast />
+          </ThemeProvider>
+        </ToastProvider>
       </PersistGate>
     </Provider>
   )
