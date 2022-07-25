@@ -91,6 +91,24 @@ export const cognitoResetPassword = (username, code, newPassword) => async (disp
   }
 }
 
+export const cognitoRefreshSession = () => async (dispatch, getState) => {
+  try {
+    const cognitoUser = await Auth.currentAuthenticatedUser()
+    const currentSession = await Auth.currentSession()
+    cognitoUser.refreshSession(currentSession.refreshToken, (err, session) => {
+      if (!err) {
+        const { idToken } = session
+        dispatch(setJwtToken(idToken.jwtToken))
+      } else {
+        dispatch(setCognitoUser(null))
+        dispatch(setIsLoggedIn(false))
+      }
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
 const cognitoUserSlice = createSlice({
   name: 'cognitoUser',
   initialState,

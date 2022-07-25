@@ -1,9 +1,11 @@
 import { store } from '../../store/configureStore';
+import { cognitoRefreshSession } from '../../store/reducers/cognitoUser'
 
 // DEV
 const base_url = 'https://developers.honely.com/';
 // PROD
 const failureMsg = 'Something went wrong. Please try again.';
+const expiredTokenMsgs = ['Token expired', 'Unauthorized']
 
 export const doPost = (url, data, apiKey, onSuccess, onFail, isPut) => {
   const state = store.getState();
@@ -25,6 +27,15 @@ export const doPost = (url, data, apiKey, onSuccess, onFail, isPut) => {
     .then(async (response) => {
       if (!response) {
         throw failureMsg;
+      }
+      if (expiredTokenMsgs.includes(response?.error?.message)) {
+        try {
+          await store.dispatch(cognitoRefreshSession())
+          response = await doPost(url, data, apiKey, onSuccess, onFail, isPut)
+          !onSuccess || onSuccess(response);
+        } catch (error) {
+          throw error
+        }
       }
       !onSuccess || onSuccess(response);
       return response;
@@ -56,6 +67,15 @@ export const doPatch = (url, data, onSuccess, onFail) => {
       if (!response) {
         throw failureMsg;
       }
+      if (expiredTokenMsgs.includes(response?.error?.message)) {
+        try {
+          await store.dispatch(cognitoRefreshSession())
+          response = await doPatch(url, data, onSuccess, onFail)
+          !onSuccess || onSuccess(response);
+        } catch (error) {
+          throw error
+        }
+      }
       !onSuccess || onSuccess(response);
       return response;
     })
@@ -85,6 +105,15 @@ export const doDelete = (url, data, onSuccess, onFail) => {
     .then(async (response) => {
       if (!response) {
         throw failureMsg;
+      }
+      if (expiredTokenMsgs.includes(response?.error?.message)) {
+        try {
+          await store.dispatch(cognitoRefreshSession())
+          response = await doDelete(url, data, onSuccess, onFail)
+          !onSuccess || onSuccess(response);
+        } catch (error) {
+          throw error
+        }
       }
       !onSuccess || onSuccess(response);
       return response;
@@ -125,6 +154,15 @@ export const doGet = (url, data, apiKey, onSuccess, onFail) => {
     .then(async (response) => {
       if (!response) {
         throw failureMsg;
+      }
+      if (expiredTokenMsgs.includes(response?.error?.message)) {
+        try {
+          await store.dispatch(cognitoRefreshSession())
+          response = await doGet(url, data, apiKey, onSuccess, onFail)
+          !onSuccess || onSuccess(response);
+        } catch (error) {
+          throw error
+        }
       }
       !onSuccess || onSuccess(response);
       return response;
