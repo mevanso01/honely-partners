@@ -64,10 +64,10 @@ export const ClientDetail = (props) => {
     }
   }
 
-  const updateClient = async (payload) => {
+  const updateClient = async (payload, isDelete = false) => {
     try {
       showToast(ToastType.Info, 'Loading')
-      setActionState({ ...actionState, loading: false })
+      setActionState({ loading: true, error: null })
       const response = await doPatch('user', payload, apiKey)
       if (response?.error) {
         throw response.error
@@ -76,7 +76,12 @@ export const ClientDetail = (props) => {
         loading: false,
         error: null
       })
-      showToast(ToastType.Success, 'Updated')
+      if (isDelete) {
+        showToast(ToastType.Success, 'Deleted')
+        navigate('/clients')
+      } else {
+        showToast(ToastType.Success, 'Updated')
+      }
     } catch (error) {
       setActionState({
         loading: false,
@@ -186,7 +191,7 @@ export const ClientDetail = (props) => {
               <Button
                 className='remove'
                 disabled={actionState.loading}
-                onClick={() => updateClient({ status: 'DELETED' })}
+                onClick={() => updateClient({ status: 'DELETED' }, true)}
               >
                 Remove Client
               </Button>

@@ -40,13 +40,13 @@ export const SubUserForm = (props) => {
 
   const onSubmit = async (formState) => {
     try {
-      setActionState({ ...actionState, loading: true })
+      setActionState({ loading: true, error: null })
       const payload = {...formState}
       if (compoanyLogoData) {
         payload['company-logo'] = compoanyLogoData
       }
       const response = await doPost('partner/users/create-user', payload)
-      if (response?.data?.error) {
+      if (response?.error) {
         throw response.error
       }
       setActionState({ loading: false, error: null })
