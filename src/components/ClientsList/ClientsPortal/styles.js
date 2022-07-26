@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const Container = styled.div`
   padding: 0 15px;
@@ -128,4 +128,17 @@ export const PaginationWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   margin: 20px 0;
+`
+export const StartDateSortContainer = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  svg {
+    font-size: 20px;
+    margin-left: 5px;
+    ${({ isASC }) => isASC && css`
+      transform: rotate(180deg);
+    `}
+  }
 `

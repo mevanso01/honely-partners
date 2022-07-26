@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Alert, Button, Input, Modal, Pagination } from '../../Shared'
 import Skeleton from 'react-loading-skeleton'
 import IosSearch from '@meronex/icons/ios/IosSearch'
+import BiChevronDown from '@meronex/icons/bi/BiChevronDown'
 import { doGet } from '../../../services/http-client'
 import { useSelector } from 'react-redux'
 import { SubUserForm } from '../SubUserForm'
@@ -16,7 +17,8 @@ import {
   ClientsTable,
   ClientRow,
   PaginationWrapper,
-  TableWrapper
+  TableWrapper,
+  StartDateSortContainer
 } from './styles'
 
 export const ClientsPortal = () => {
@@ -26,13 +28,23 @@ export const ClientsPortal = () => {
   const [alertState, setAlertState] = useState({ open: false, content: [] })
   const [subUsersState, setSubUsersState] = useState({ loading: true, result: [], error: null })
   const [pagination, setPagination] = useState({ currentPage: 1, pageSize: 5, total: null })
+  const [search, setSearch] = useState(null)
+  const [sortbyDate, setSortbyDate] = useState(false)
   const [openAddForm, setOpenAddForm] = useState(false)
   const [usersLoaded, setUsersLoaded] = useState(false)
 
   const getSubUsers = async (page = 1) => {
     try {
       setSubUsersState({ ...subUsersState, loading: true })
-      const response = await doGet('partner/users', { limit: pagination.pageSize, offset: (page - 1) * pagination.pageSize })
+      const options = {
+        limit: pagination.pageSize,
+        offset: (page - 1) * pagination.pageSize
+      }
+      if (search) {
+        options.search = search
+      }
+      options['sortby-date'] = sortbyDate ? 'ASC' : 'DESC'
+      const response = await doGet('partner/users', options)
       if (response?.error) {
         throw response.error
       }
@@ -64,12 +76,21 @@ export const ClientsPortal = () => {
     getSubUsers(pagination.currentPage)
     setOpenAddForm(false)
   }
-  
+
+
+  let timeout = null
+  const onChangeSearch = (e) => {
+    clearTimeout(timeout)
+    timeout = setTimeout(function () {
+      setSearch(e.target.value)
+    }, 750)
+  }
+
   useEffect(() => {
     if (auth) {
       getSubUsers()
     }
-  }, [auth])
+  }, [auth, search, sortbyDate])
   
   useEffect(() => {
     if (subUsersState.error) {
@@ -100,6 +121,7 @@ export const ClientsPortal = () => {
       <SearchBoxWrapper>
         <Input
           placeholder='Search client by key word'
+          onChange={e => onChangeSearch(e)}
         />
         <IosSearch />
       </SearchBoxWrapper>
@@ -111,7 +133,15 @@ export const ClientsPortal = () => {
               <tr>
                 <th>Company Name</th>
                 <th>Domain</th>
-                <th>Start Date</th>
+                <th>
+                  <StartDateSortContainer
+                    isASC={sortbyDate}
+                    onClick={() => setSortbyDate(!sortbyDate)}
+                  >
+                    <span> Start Date</span>
+                    <BiChevronDown />
+                  </StartDateSortContainer>
+                </th>
                 <th>Status</th>
               </tr>
             </thead>
