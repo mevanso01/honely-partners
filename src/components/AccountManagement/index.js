@@ -3,9 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { DashboardLayout } from '../Layout/DashboardLayout'
 import { Alert, Button, Input, Modal } from '../Shared'
 import MdcContentCopy from '@meronex/icons/mdc/MdcContentCopy'
-import { doPatch } from '../../services/http-client'
+import { doGet, doPatch } from '../../services/http-client'
 import { useToast, ToastType } from '../../contexts/ToastContext'
 import { ChangePassword } from './ChangePassword'
+import { setPartner } from '../../store/reducers/partner'
 
 import {
   Container,
@@ -47,25 +48,39 @@ export const AccountManagement = () => {
       }
     }
   }
-  const copyToClipboard = () => {
-    const copyText = 'test'
+  const copyToClipboard = (copyText) => {
     navigator.clipboard.writeText(copyText)
+  }
+
+  const getPartner = async () => {
+    try {
+      const response = await doGet('partner')
+      if (response?.error) {
+        throw response.error
+      }
+      dispatch(setPartner(response?.data))
+      setActionState({
+        loading: false,
+        error: null
+      })
+      showToast(ToastType.Success, 'Uploaded')
+    } catch (error) {
+      setActionState({
+        loading: false,
+        error: error.message
+      })
+    }
   }
 
   const uploadImage = async () => {
     try {
-      showToast(ToastType.Info, 'Loading')
       setActionState({ loading: true, error: null })
       const response = await doPatch('partner/update-partner-info', { logo: compoanyLogoData })
       if (response?.error) {
         throw response.error
       }
-      setActionState({
-        loading: false,
-        error: null
-      })
+      getPartner()
       setCompanyLogoData(null)
-      showToast(ToastType.Success, 'Uploaded')
     } catch (error) {
       setActionState({
         loading: false,
@@ -137,7 +152,7 @@ export const AccountManagement = () => {
                 disabled={!compoanyLogoData}
                 onClick={() => uploadImage()}
               >
-                Upload Image
+                {actionState.loading ? 'Uploading...' : 'Upload Image'}
               </Button>
             </UploadButtonContainer>
           </LogoContainer>
@@ -154,7 +169,7 @@ export const AccountManagement = () => {
               <Button
                 color='black'
                 naked
-                onClick={() => copyToClipboard()}
+                onClick={() => copyToClipboard(partner.info?.app_client_id)}
               >
                 <MdcContentCopy />
                 <span>Copy</span>
@@ -172,7 +187,7 @@ export const AccountManagement = () => {
               <Button
                 color='black'
                 naked
-                onClick={() => copyToClipboard()}
+                onClick={() => copyToClipboard(partner.info?.app_client_secret)}
               >
                 <MdcContentCopy />
                 <span>Copy</span>
