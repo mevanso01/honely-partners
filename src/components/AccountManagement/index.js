@@ -108,10 +108,6 @@ export const AccountManagement = () => {
           <ManagementContainer>
             <h1>Account Management</h1>
             <InfoItem>
-              <label>Full Name</label>
-              <p>Thomas Jefferson</p>
-            </InfoItem>
-            <InfoItem>
               <label>Organization</label>
               <p>{partner.info?.company_name}</p>
             </InfoItem>
