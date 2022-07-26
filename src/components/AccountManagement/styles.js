@@ -137,4 +137,31 @@ export const CredentialItem = styled.div`
   p {
     font-size: 14px;
   }
+
+  input {
+    flex: 1;
+    max-width: 300px;
+  }
+`
+export const SecretWrpper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 300px;
+
+  input {
+    padding-right: 28px;
+  }
+
+  svg {
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    font-size: 20px;
+
+    &:hover {
+      color: ${props => props.theme.colors.primary};
+    }
+  }
 `

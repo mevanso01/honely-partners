@@ -7,6 +7,8 @@ import { doGet, doPatch } from '../../services/http-client'
 import { useToast, ToastType } from '../../contexts/ToastContext'
 import { ChangePassword } from './ChangePassword'
 import { setPartner } from '../../store/reducers/partner'
+import AiOutlineEye from '@meronex/icons/ai/AiOutlineEye'
+import AiOutlineEyeInvisible from '@meronex/icons/ai/AiOutlineEyeInvisible'
 
 import {
   Container,
@@ -17,7 +19,8 @@ import {
   LogoWrapper,
   UploadButtonContainer,
   IntegrationCredentialsContainer,
-  CredentialItem
+  CredentialItem,
+  SecretWrpper
 } from './styles'
 
 export const AccountManagement = () => {
@@ -30,6 +33,7 @@ export const AccountManagement = () => {
   const [actionState, setActionState] = useState({ loading: false, error: null })
   const [alertState, setAlertState] = useState({ open: false, content: [] })
   const [openModal, setOpenModal] = useState(false)
+  const [showSecret, setShowSecret] = useState(false)
 
   const inputRef = useRef()
   const handleFiles = (e) => {
@@ -180,10 +184,13 @@ export const AccountManagement = () => {
           <CredentialItem>
             <label>Client Secret</label>
             <div>
-              <Input
-                type='password'
-                defaultValue={partner.info?.app_client_secret}
-              />
+              <SecretWrpper>
+                <Input
+                  type={showSecret ? 'text' : 'password'}
+                  defaultValue={partner.info?.app_client_secret}
+                />
+                {showSecret ? <AiOutlineEyeInvisible onClick={() => setShowSecret(false)} /> : <AiOutlineEye onClick={() => setShowSecret(true)} />}
+              </SecretWrpper>
               <Button
                 color='black'
                 naked
