@@ -197,7 +197,7 @@ export const AccountManagement = () => {
               </Button>
             </div>
             <p>Client secret used to request an OAuth 2.0 access token</p>
-            <p>Creation Date: 6/1/2021 8:21 AM</p>
+            <p>Creation Date: {partner.info?.signed_up_date}</p>
           </CredentialItem>
         </IntegrationCredentialsContainer>
       </Container>
