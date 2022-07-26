@@ -1,5 +1,9 @@
 import React from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import AiOutlinePlusCircle from '@meronex/icons/ai/AiOutlinePlusCircle';
+import MdViewHeadline from '@meronex/icons/md/MdViewHeadline';
+import MdCheckBox from '@meronex/icons/md/MdCheckBox';
+import MdCheckBoxOutlineBlank from '@meronex/icons/md/MdCheckBoxOutlineBlank';
 
 const PollQuestion = (props) => {
   const {
@@ -117,7 +121,7 @@ const PollQuestion = (props) => {
     return (
       <div className='poll-field-item-container'>
         <div className='add-input-fields-container'>
-          <span className='mdi mdi-view-headline' />
+          <MdViewHeadline />
           <input
             className='widget-input'
             defaultValue={poll.label}
@@ -162,9 +166,9 @@ const PollQuestion = (props) => {
             onPointerDown={() => handleUpdateItem(poll.order, { required: !poll.required })}
           >
             {poll.required ? (
-              <span className='mdi mdi-checkbox-marked-outline active' />
+              <MdCheckBox className='active' />
             ) : (
-              <span className='mdi mdi-checkbox-blank-outline' />
+              <MdCheckBoxOutlineBlank />
             )}
             Make this steo a requirement
           </button>
@@ -218,8 +222,7 @@ const PollQuestion = (props) => {
       />
       <div className='add-item-containter'>
         <div className='widget-block-divider' />
-        <span
-          className='mdi mdi-plus-circle-outline'
+        <AiOutlinePlusCircle
           onClick={() => handleAddPoll()}
         />
       </div>

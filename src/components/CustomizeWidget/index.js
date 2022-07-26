@@ -94,14 +94,14 @@ export const CustomizeWidget = (props) => {
       if (response?.error) {
         throw response.error
       }
-      setWidgetConfig(response.data.data.current)
+      setWidgetConfig(response.data.current)
       setWidgetSettings({
         ...widgetSettings,
         loading: false,
         settings: {
-          current: response.data.data.current,
-          'default-light': filterResponse(response.data.data['default-light']),
-          'default-dark': filterResponse(response.data.data['default-dark'])
+          current: response.data.current,
+          'default-light': filterResponse(response.data['default-light']),
+          'default-dark': filterResponse(response.data['default-dark'])
         }
       })
 

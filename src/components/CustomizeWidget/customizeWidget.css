@@ -115,7 +115,7 @@
   justify-content: space-between;
   position: relative;
 }
-.add-input-fields-container .mdi-view-headline {
+.add-input-fields-container > svg {
   font-size: 24px;
   cursor: pointer;
   margin-right: 8px;
@@ -160,12 +160,13 @@
 .add-item-containter .widget-block-divider {
   width: 100%;
 }
-.add-item-containter span {
+.add-item-containter svg {
   position: absolute;
   background-color: #f6f6f6;
   cursor: pointer;
+  font-size: 20px;
 }
-.add-item-containter span:hover {
+.add-item-containter svg:hover {
   color: #24CB43;
 }
 .poll-field-item-container {
@@ -208,11 +209,11 @@
   cursor: pointer;
   margin-top: 22px;
 }
-.requirement-checkbox span {
+.requirement-checkbox svg {
   font-size: 20px;
   margin-right: 8px;
 }
-.requirement-checkbox span.active {
+.requirement-checkbox svg.active {
   color: #24CB43;
 }
 .poll-checkbox-btn {

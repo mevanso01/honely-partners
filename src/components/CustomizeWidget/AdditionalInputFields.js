@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import AiOutlinePlusCircle from '@meronex/icons/ai/AiOutlinePlusCircle';
+import MdViewHeadline from '@meronex/icons/md/MdViewHeadline';
 
 const AdditionalInputFields = (props) => {
   const {
@@ -68,7 +70,7 @@ const AdditionalInputFields = (props) => {
     return (
       <>
         <div className='add-input-fields-container'>
-          <span className='mdi mdi-view-headline' />
+          <MdViewHeadline />
           <div className='add-input-fields-wrapper'>
             <input
               className='widget-input'
@@ -157,8 +159,7 @@ const AdditionalInputFields = (props) => {
       </div>
       <div className='add-item-containter'>
         <div className='widget-block-divider' />
-        <span
-          className='mdi mdi-plus-circle-outline'
+        <AiOutlinePlusCircle
           onClick={handleAddInputField}
         />
       </div>
