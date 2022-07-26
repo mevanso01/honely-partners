@@ -142,3 +142,34 @@ export const StartDateSortContainer = styled.div`
     `}
   }
 `
+export const StatusHeaderItem = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  svg {
+    font-size: 20px;
+    margin-left: 5px;
+  }
+`
+export const StatusPopoverBody = styled.div`
+  background-color: ${props => props.theme.colors.white};
+  z-index: 1001;
+  border: 1px solid #E9EFFC;
+  box-shadow: 0px 2px 30px rgba(215, 224, 235, 0.5);
+  border-radius: 4px;
+  padding: 15px;
+`
+export const StatusItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  cursor: pointer;
+
+  svg {
+    font-size: 20px;
+    margin-right: 5px;
+    &.active {
+      color: ${props => props.theme.colors.primary};
+    }
+  }
+`

@@ -7,6 +7,7 @@ import BiChevronDown from '@meronex/icons/bi/BiChevronDown'
 import { doGet } from '../../../services/http-client'
 import { useSelector } from 'react-redux'
 import { SubUserForm } from '../SubUserForm'
+import { StatusPopper } from './StatusPopper'
 
 import {
   Container,
@@ -32,6 +33,7 @@ export const ClientsPortal = () => {
   const [sortbyDate, setSortbyDate] = useState(false)
   const [openAddForm, setOpenAddForm] = useState(false)
   const [usersLoaded, setUsersLoaded] = useState(false)
+  const [selectedStatuses, setSelectedStatuses] = useState([])
 
   const getSubUsers = async (page = 1) => {
     try {
@@ -44,6 +46,9 @@ export const ClientsPortal = () => {
         options.search = search
       }
       options['sortby-date'] = sortbyDate ? 'ASC' : 'DESC'
+      if (selectedStatuses.length) {
+        options.filter = selectedStatuses.join(',')
+      }
       const response = await doGet('partner/users', options)
       if (response?.error) {
         throw response.error
@@ -90,7 +95,7 @@ export const ClientsPortal = () => {
     if (auth) {
       getSubUsers()
     }
-  }, [auth, search, sortbyDate])
+  }, [auth, search, sortbyDate, selectedStatuses])
   
   useEffect(() => {
     if (subUsersState.error) {
@@ -138,11 +143,16 @@ export const ClientsPortal = () => {
                     isASC={sortbyDate}
                     onClick={() => setSortbyDate(!sortbyDate)}
                   >
-                    <span> Start Date</span>
+                    <span>Start Date</span>
                     <BiChevronDown />
                   </StartDateSortContainer>
                 </th>
-                <th>Status</th>
+                <th>
+                  <StatusPopper
+                    selectedStatuses={selectedStatuses}
+                    setSelectedStatuses={setSelectedStatuses}
+                  />
+                </th>
               </tr>
             </thead>
             <tbody>
