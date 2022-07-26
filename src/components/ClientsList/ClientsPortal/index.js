@@ -147,7 +147,7 @@ export const ClientsPortal = () => {
             </thead>
             <tbody>
               {subUsersState.loading ? (
-                [...Array(5).keys()].map(index => (
+                [...Array(pagination.pageSize).keys()].map(index => (
                   <ClientRow key={index}>
                     <td><Skeleton width={80} height={17} /></td>
                     <td><Skeleton width={130} height={17} /></td>
