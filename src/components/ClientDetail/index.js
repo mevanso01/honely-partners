@@ -35,8 +35,8 @@ export const ClientDetail = (props) => {
   const [actionState, setActionState] = useState({ loading: false, error: null })
   const [alertState, setAlertState] = useState({ open: false, content: [] })
 
-  const copyToClipboard = () => {
-    const copyText = `<script src="https://developers.honely.com/widget/load-script?api-key=test-601253ce-c99f-11ec-a950-0ebb94ef5085"></script>`
+  const copyToClipboard = (apiKey, isWidgetCode = false) => {
+    const copyText = isWidgetCode ? `<script src="https://developers.honely.com/widget/load-script?api-key=${apiKey}"></script>` : apiKey
     navigator.clipboard.writeText(copyText)
   }
 
@@ -130,7 +130,7 @@ export const ClientDetail = (props) => {
                 )}
                 <IconButton
                   color='primary'
-                  onClick={() => copyToClipboard()}
+                  onClick={() => copyToClipboard(clientState.result?.api_key, true)}
                 >
                   <MdcContentCopy />
                 </IconButton>
@@ -154,7 +154,7 @@ export const ClientDetail = (props) => {
                 )}
                 <IconButton
                   color='primary'
-                  onClick={() => copyToClipboard()}
+                  onClick={() => copyToClipboard(clientState.result?.api_key)}
                 >
                   <MdcContentCopy />
                 </IconButton>
