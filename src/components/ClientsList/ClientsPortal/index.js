@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Alert, Button, Input, Modal, Pagination } from '../../Shared'
+import { Button, Input, Modal, Pagination } from '../../Shared'
 import Skeleton from 'react-loading-skeleton'
 import IosSearch from '@meronex/icons/ios/IosSearch'
 import BiChevronDown from '@meronex/icons/bi/BiChevronDown'
@@ -26,7 +26,6 @@ export const ClientsPortal = () => {
   const navigate = useNavigate()
   const cognitoUser = useSelector(state => state.cognitoUser)
   const auth = cognitoUser?.isLoggedIn
-  const [alertState, setAlertState] = useState({ open: false, content: [] })
   const [subUsersState, setSubUsersState] = useState({ loading: true, result: [], error: null })
   const [pagination, setPagination] = useState({ currentPage: 1, pageSize: 5, total: null })
   const [search, setSearch] = useState(null)
@@ -97,12 +96,6 @@ export const ClientsPortal = () => {
     }
   }, [auth, search, sortbyDate, selectedStatuses])
   
-  useEffect(() => {
-    if (subUsersState.error) {
-      setAlertState({ open: true, content: subUsersState.error })
-    }
-  }, [subUsersState.error])
-
   return (
     <Container>
       <Header>
@@ -133,53 +126,58 @@ export const ClientsPortal = () => {
       <ClientsListContainer>
         <p>List of clients</p>
         <TableWrapper>
-          <ClientsTable>
-            <thead>
-              <tr>
-                <th>Company Name</th>
-                <th>Domain</th>
-                <th>
-                  <StartDateSortContainer
-                    isASC={sortbyDate}
-                    onClick={() => setSortbyDate(!sortbyDate)}
-                  >
-                    <span>Start Date</span>
-                    <BiChevronDown />
-                  </StartDateSortContainer>
-                </th>
-                <th>
-                  <StatusPopper
-                    selectedStatuses={selectedStatuses}
-                    setSelectedStatuses={setSelectedStatuses}
-                  />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {subUsersState.loading ? (
-                [...Array(pagination.pageSize).keys()].map(index => (
-                  <ClientRow key={index}>
-                    <td><Skeleton width={80} height={17} /></td>
-                    <td><Skeleton width={130} height={17} /></td>
-                    <td><Skeleton width={100} height={17} /></td>
-                    <td><Skeleton width={80} height={17} /></td>
-                  </ClientRow>
-                ))
-              ) : (
-                subUsersState.result.map(user => (
-                  <ClientRow
-                    key={user.user_id}
-                    onClick={() => navigate(`/clients/${user.api_key}`)}
-                  >
-                    <td>{user?.company_name}</td>
-                    <td>{user?.company_url}</td>
-                    <td>{user?.signed_up_date}</td>
-                    <td className='status'>{user?.status?.toLowerCase()}</td>
-                  </ClientRow>
-                ))
-              )}
-            </tbody>
-          </ClientsTable>
+          {!subUsersState.loading && subUsersState.error && (
+            <p className='error'>{subUsersState.error === 'Partner sub users not found' ? 'No clients, yet' : subUsersState.error}</p>
+          )}
+          {!subUsersState.error && (
+            <ClientsTable>
+              <thead>
+                <tr>
+                  <th>Company Name</th>
+                  <th>Domain</th>
+                  <th>
+                    <StartDateSortContainer
+                      isASC={sortbyDate}
+                      onClick={() => setSortbyDate(!sortbyDate)}
+                    >
+                      <span>Start Date</span>
+                      <BiChevronDown />
+                    </StartDateSortContainer>
+                  </th>
+                  <th>
+                    <StatusPopper
+                      selectedStatuses={selectedStatuses}
+                      setSelectedStatuses={setSelectedStatuses}
+                    />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {subUsersState.loading ? (
+                  [...Array(pagination.pageSize).keys()].map(index => (
+                    <ClientRow key={index}>
+                      <td><Skeleton width={80} height={17} /></td>
+                      <td><Skeleton width={130} height={17} /></td>
+                      <td><Skeleton width={100} height={17} /></td>
+                      <td><Skeleton width={80} height={17} /></td>
+                    </ClientRow>
+                  ))
+                ) : (
+                  subUsersState.result.map(user => (
+                    <ClientRow
+                      key={user.user_id}
+                      onClick={() => navigate(`/clients/${user.api_key}`)}
+                    >
+                      <td>{user?.company_name}</td>
+                      <td>{user?.company_url}</td>
+                      <td>{user?.signed_up_date}</td>
+                      <td className='status'>{user?.status?.toLowerCase()}</td>
+                    </ClientRow>
+                  ))
+                )}
+              </tbody>
+            </ClientsTable>
+          )}
         </TableWrapper>
         {usersLoaded && (
           <PaginationWrapper>
@@ -191,16 +189,6 @@ export const ClientsPortal = () => {
           </PaginationWrapper>
         )}
       </ClientsListContainer>
-      <Alert
-        title='Error'
-        width='700px'
-        content={alertState.content}
-        acceptText={'Accept'}
-        open={alertState.open}
-        onClose={() => setAlertState({ open: false, content: [] })}
-        onAccept={() => setAlertState({ open: false, content: [] })}
-        closeOnBackdrop={false}
-      />
       <Modal
         open={openAddForm}
         onClose={() => setOpenAddForm(false)}

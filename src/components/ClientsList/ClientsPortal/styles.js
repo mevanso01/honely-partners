@@ -85,6 +85,12 @@ export const ClientsListContainer = styled.div`
 `
 export const TableWrapper = styled.div`
   overflow: auto;
+
+  p.error {
+    margin: 20px 0;
+    font-size: 16px;
+    color: #D83520;
+  }
 `
 export const ClientsTable = styled.table`
   width: 100%;
