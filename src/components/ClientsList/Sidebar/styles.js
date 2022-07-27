@@ -4,6 +4,10 @@ export const SidebarContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding: 30px 5px;
+
+  > div:first-child {
+    flex: 1;
+  }
   
   @media (min-width: 768px) {
     flex-direction: column;
@@ -34,7 +38,7 @@ export const MenuItemWrapper = styled.div`
 `
 export const MenuItem = styled.span`
   display: block;
-  width: 64px;
+  min-width: 64px;
   font-weight: 700;
   font-size: 18px;
   line-height: 32px;

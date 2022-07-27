@@ -109,6 +109,16 @@ export const cognitoRefreshSession = () => async (dispatch, getState) => {
   }
 }
 
+export const cognitoSignOut = () => async (dispatch, getState) => {
+  try {
+    await Auth.signOut()
+    dispatch(initCognitoUser())
+    return true
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
 const cognitoUserSlice = createSlice({
   name: 'cognitoUser',
   initialState,
@@ -121,11 +131,16 @@ const cognitoUserSlice = createSlice({
     },
     setJwtToken: (state, action) => {
       state.jwtToken = action.payload
+    },
+    initCognitoUser: (state, action) => {
+      state.user = null
+      state.jwtToken = null
+      state.isLoggedIn = false
     }
   },
   extraReducers: {}
 })
 
-export const { setIsLoggedIn, setCognitoUser, setJwtToken } = cognitoUserSlice.actions
+export const { setIsLoggedIn, setCognitoUser, setJwtToken, initCognitoUser } = cognitoUserSlice.actions
 
 export default cognitoUserSlice.reducer
