@@ -2,6 +2,7 @@ import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { cognitoSignOut } from '../../../store/reducers/cognitoUser'
 import { useDispatch } from 'react-redux'
+import FaSignOutAlt from '@meronex/icons/fa/FaSignOutAlt'
 
 import {
   SidebarContainer,
@@ -33,6 +34,7 @@ export const Sidebar = () => {
       <MenuItemWrapper
         onClick={() => dispatch(cognitoSignOut())}
       >
+        <FaSignOutAlt />
         <MenuItem>Sign out</MenuItem>
       </MenuItemWrapper>
     </SidebarContainer>
