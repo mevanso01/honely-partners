@@ -14,11 +14,10 @@ import {
 export const NewPassword = () => {
   const [submitState, setSubmitState] = useState({ loading: false, error: null })
 
-    // const handleChangePassword = async () => {
-  //   Auth.completeNewPassword(user, 'Test$100')
-  // }
   const dispatch = useDispatch()
-  const { register, handleSubmit, formState: { errors }  } = useForm()
+  const { register, handleSubmit, formState: { errors }, watch  } = useForm()
+  const newPassword = watch('newpassword', '')
+
   const onSubmit = async (formState) => {
     try {
       setSubmitState({ ...submitState, loading: true })
@@ -59,6 +58,20 @@ export const NewPassword = () => {
           }
         />
         {errors.newpassword?.message && <ValidationError><BisError /> {errors.newpassword?.message}</ValidationError>}
+      </FormController>
+      <FormController>
+        <label>Confirm new Password</label>
+        <Input
+          type='password'
+          {
+            ...register('confirm_password',
+            {
+              required: { value: true, message: 'The field confirm password is required' },
+              validate: value => value === newPassword || 'The passwords do not match'
+            })
+          }
+        />
+        {errors.confirm_password?.message && <ValidationError><BisError /> {errors.confirm_password?.message}</ValidationError>}
       </FormController>
       <Button
         color='primary'
