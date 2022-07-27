@@ -118,7 +118,7 @@ export const Login = () => {
         open={openModal}
         onClose={() => setOpenModal(false)}
       >
-        <NewPassword />
+        <NewPassword onClose={() => setOpenModal(false)} />
       </Modal>
 
       <Alert

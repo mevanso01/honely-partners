@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Input, Button } from '../Shared'
 import BisError from '@meronex/icons/bi/BisError'
 import { cognitoCompleteNewPassword } from '../../store/reducers/cognitoUser'
+import { useToast, ToastType } from '../../contexts/ToastContext'
 
 import {
   FormController,
@@ -11,9 +12,10 @@ import {
   ValidationError
 } from './styles'
 
-export const NewPassword = () => {
+export const NewPassword = (props) => {
   const [submitState, setSubmitState] = useState({ loading: false, error: null })
 
+  const [, { showToast }] = useToast()
   const dispatch = useDispatch()
   const { register, handleSubmit, formState: { errors }, watch  } = useForm()
   const newPassword = watch('newpassword', '')
@@ -25,6 +27,10 @@ export const NewPassword = () => {
       setSubmitState({ loading: false, error: null })
     } catch (error) {
       setSubmitState({ loading: false, error: [error.message] })
+      if (error?.message === 'Invalid session for the user, session is expired.') {
+        showToast(ToastType.Info, 'Please login again.')
+        props.onClose()
+      }
     }
   }
 
