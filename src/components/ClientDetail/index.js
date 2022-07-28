@@ -78,6 +78,13 @@ export const ClientDetail = (props) => {
       } else {
         showToast(ToastType.Success, 'Updated')
       }
+      setClientState({
+        ...clientState,
+        result: {
+          ...clientState,
+          ...payload
+        }
+      })
     } catch (error) {
       setActionState({
         loading: false,
@@ -168,9 +175,9 @@ export const ClientDetail = (props) => {
                 outline
                 color='black'
                 disabled={actionState.loading}
-                onClick={() => updateClient({ status: 'INACTIVE' })}
+                onClick={() => updateClient({ status: clientState.result?.status !== 'INACTIVE' ? 'INACTIVE' : 'ACTIVE' })}
               >
-                Deactivate Client
+                {clientState.result?.status !== 'INACTIVE' ? 'Deactivate Client' : 'Activate Client'}
               </Button>
               <Button
                 color='black'
