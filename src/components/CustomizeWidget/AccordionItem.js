@@ -1,18 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react'
+import BiChevronDown from '@meronex/icons/bi/BiChevronDown'
 
 const AccordionItem = (props) => {
   const {
     header,
-    isForceOpen
+    isForceOpen,
+    mode
   } = props
 
   const [active, setActive] = useState(false);
+  const [forceUpdate, setForceUpdte] = useState(false)
   const accordionContent = useRef()
   useEffect(() => {
     if (isForceOpen) {
       setActive(true)
     }
   }, [isForceOpen])
+
+  useEffect(() => {
+    setForceUpdte(!forceUpdate)
+  }, [mode])
   
   return (
     <div className="accordion-item">
@@ -21,7 +28,7 @@ const AccordionItem = (props) => {
         onClick={() => setActive(!active)}
       >
         {header}
-        <span className="mdi mdi-chevron-down" />
+        <BiChevronDown />
       </div>
       <div
         className={`accordion-content ${active ? "active" : ""}`}
