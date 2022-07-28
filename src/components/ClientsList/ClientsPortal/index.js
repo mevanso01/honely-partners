@@ -111,6 +111,7 @@ export const ClientsPortal = () => {
           <Button
             outline
             color='black'
+            disabled
           >
             + Import CSV
           </Button>
