@@ -4,18 +4,25 @@
   height: 100%;
 }
 .go-back-btn {
-  margin: 20px 30px;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
   display: flex;
   align-items: center;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   border: none;
   outline: none;
-  background: transparent;
   cursor: pointer;
+  background: #ff9952;
+  color: white;
+  border-radius: 30px;
+  padding: 10px 15px;
+
 }
 .go-back-btn:hover {
-  color: #FF9900;
+  background: #FF9900;
 }
 .loading-animation {
   margin: 22% auto;
