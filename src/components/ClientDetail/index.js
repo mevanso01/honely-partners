@@ -81,7 +81,7 @@ export const ClientDetail = (props) => {
       setClientState({
         ...clientState,
         result: {
-          ...clientState,
+          ...clientState.result,
           ...payload
         }
       })
