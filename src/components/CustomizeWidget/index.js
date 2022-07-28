@@ -66,6 +66,10 @@ export const CustomizeWidget = (props) => {
         },
         error: null
       })
+
+      const _widgetConfig = { ...widgetConfig }
+      delete _widgetConfig.extended
+      setWidgetConfig(_widgetConfig)
     } catch (error) {
       setWidgetSettings({
         ...widgetSettings,
