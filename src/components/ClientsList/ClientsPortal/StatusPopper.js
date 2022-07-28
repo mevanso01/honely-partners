@@ -19,9 +19,7 @@ export const StatusPopper = (props) => {
   const options = [
     { value: 'ACTIVE', content: 'Active' },
     { value: 'INACTIVE', content: 'Inactive ' },
-    { value: 'CONFIRMED', content: 'Confirmed' },
-    { value: 'UNCONFIRMED', content: 'Unconfirmed' },
-    { value: 'DELETED', content: 'Deleted' }
+    { value: 'UNCONFIRMED', content: 'Unconfirmed' }
   ]
   const [open, setOpen] = useState(false)
   const referenceElement = useRef()
