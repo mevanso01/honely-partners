@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Alert, Button, Input } from '../../Shared'
-import { useForm } from 'react-hook-form'
+import { Alert, Button, Input as CustomInput } from '../../Shared'
+import { useForm, Controller } from 'react-hook-form'
 import BisError from '@meronex/icons/bi/BisError'
 import { doPost } from '../../../services/http-client'
+import Input from 'react-phone-number-input/input'
+import 'react-phone-number-input/style.css'
 
 import {
   FormContainer,
@@ -14,7 +16,7 @@ import {
 } from './styles'
 
 export const SubUserForm = (props) => {
-  const { register, handleSubmit, formState: { errors }  } = useForm()
+  const { register, handleSubmit, formState: { errors }, control  } = useForm()
   const inputRef = useRef()
   const [photoState, setPhotoState] = useState(null)
   const [compoanyLogoData, setCompanyLogoData] = useState(null)
@@ -71,7 +73,7 @@ export const SubUserForm = (props) => {
       <h2>Add new user</h2>
       <FormController>
         <label>Email</label>
-          <Input
+          <CustomInput
             type='email'
             {
               ...register('email',
@@ -88,21 +90,34 @@ export const SubUserForm = (props) => {
       </FormController>
       <FormController>
         <label>Phone number</label>
-          <Input
-            type='text'
-            {
-              ...register('phone-number',
-              {
-                minLength: { value: 10, message: 'Phone number must contain 10 digits' },
-                maxLength: { value: 10, message: 'Invalid Phone number' },
-              })
-            }
+          <Controller
+            name='phone-number'
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                className='phone-input'
+                defaultCountry='US'
+                country='US'
+                placeholder='e.g (555) 123-4444'
+                value={value && value.indexOf('+1') === -1 ? `+1${value}` : value}
+                onChange={number => onChange(number && number.indexOf('+1') !== -1 ? number.split('+1')[1] : number)}
+                onKeyPress={e => {
+                  if (value?.length === 10) {
+                    e.preventDefault()
+                  }
+                }}
+              />
+            )}
+            rules={{
+              minLength: { value: 10, message: 'Phone number must contain 10 digits' },
+              maxLength: { value: 10, message: 'Invalid Phone number' },
+            }}
           />
         {errors['phone-number']?.message && <ValidationError><BisError /> {errors['phone-number']?.message}</ValidationError>}
       </FormController>
       <FormController>
         <label>Full name</label>
-          <Input
+          <CustomInput
             type='text'
             {
               ...register('full-name',
@@ -115,7 +130,7 @@ export const SubUserForm = (props) => {
       </FormController>
       <FormController>
         <label>Company name</label>
-          <Input
+          <CustomInput
             type='text'
             {
               ...register('company-name',
@@ -128,7 +143,7 @@ export const SubUserForm = (props) => {
       </FormController>
       <FormController>
         <label>Company url</label>
-          <Input
+          <CustomInput
             type='text'
             {
               ...register('company-url',

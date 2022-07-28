@@ -24,6 +24,28 @@ export const FormController = styled.div`
     min-width: 300px;
   }
 
+  input.phone-input {
+    background: #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.33);
+    font-size: 16px;
+    line-height: 20px;
+    padding: 10px 17px;
+    outline: none;
+    &:focus {
+      border-color: ${props => props.theme.colors.primary};
+    }
+    &::placeholder,
+    &::-webkit-input-placeholder {
+      color: rgba(0, 0, 0, 0.66);
+    }
+    &:-ms-input-placeholder {
+      color: rgba(0, 0, 0, 0.66);
+    }
+    &::-ms-reveal{
+      display: none;
+    }
+  }
+
   @media (min-width: 768px) {
     label {
       font-size: 18px;
