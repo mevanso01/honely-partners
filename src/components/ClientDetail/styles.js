@@ -43,27 +43,12 @@ export const DetailWrapper = styled.div`
     padding: 30px 60px;
   }
 `
-export const ActionSidebar = styled.div`
-  background-color: ${props => props.theme.colors.backgroundGray100};
-  padding: 30px 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  @media (min-width: 768px) {
-    padding: 30px;
-  }
-  @media (min-width: 992px) {
-    width: 250px;
-    padding: 30px 20px;
-  }
-  @media (min-width: 1025px) {
-    padding: 30px 40px;
-    width: 300px;
-  }
-`
 export const AccountInformation = styled.div`
   margin-top: 60px;
+  padding-bottom: 40px;
+  button {
+    margin-top: 20px;
+  }
   p {
     font-size: 14px;
     line-height: 22px;
@@ -71,15 +56,20 @@ export const AccountInformation = styled.div`
   }
 `
 export const DetailSection = styled.div`
-  margin-bottom: 50px;
   h3 {
     font-weight: 400;
     font-size: 20px;
     margin: 0 0 20px 0;
   }
+
+  ${({ isBorder }) => isBorder && css`
+    border-top: 1px solid ${props => props.theme.colors.borderColor};
+    border-bottom: 1px solid ${props => props.theme.colors.borderColor};
+    padding: 40px 0;
+  `}
 `
 export const WidgetCodeCard = styled.div`
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: ${props => props.theme.colors.backgroundGray100};
   border-radius: 8px;
   padding: 30px 20px;
   margin-bottom: 30px;
@@ -89,7 +79,7 @@ export const WidgetCodeCard = styled.div`
   p {
     flex: 1;
     margin: 0;
-    color: ${props => props.theme.colors.white};
+    color: ${props => props.theme.colors.black};
     font-size: 16px;
     word-break: break-all;
   }
@@ -102,47 +92,22 @@ export const WidgetCodeCard = styled.div`
   }
 `
 export const APIKeyCard = styled(WidgetCodeCard)`
-  background-color: ${props => props.theme.colors.backgroundGray100};
-  p {
-    color: ${props => props.theme.colors.black};
-  }
-`
-export const SubMenus = styled.div`
-`
-export const MenuItemWrapper = styled.div`
-  padding: 3px 0;
-  cursor: pointer;
-
-  ${({ active }) => active && css`
-    span {
-      color: ${props => props.theme.colors.primary};
-    }
-  `}
-  &:hover {
-    span {
-      color: ${props => props.theme.colors.primary};
-    }
-  }
-`
-export const MenuItem = styled.span`
-  display: block;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 32px;
-  margin: 0 10px;
-
 `
 export const ActionButtonGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0 20px 0;
   button {
     width: 100%;
-    margin: 20px 0;
-    &.remove {
-      background: ${props => props.theme.colors.lightRed};
-      border-color: ${props => props.theme.colors.black};
-      color: ${props => props.theme.colors.black};
+    margin: 10px 0;
+  }
 
-      &:hover {
-        background: ${props => darken(0.1, props.theme.colors.lightRed)};
+  @media (min-width: 768px) {
+    flex-direction: row;
+    button{
+      width: 250px;
+      &:first-child {
+        margin-right: 60px;
       }
     }
   }

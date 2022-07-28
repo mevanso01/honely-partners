@@ -5,7 +5,7 @@ import { Container, MainContent } from '../ClientsList/styles'
 import FiChevronRight from '@meronex/icons/fi/FiChevronRight'
 import { Button, IconButton } from '../Shared'
 import MdcContentCopy from '@meronex/icons/mdc/MdcContentCopy'
-import { doGet, doPatch, doPost } from '../../services/http-client'
+import { doGet, doPatch } from '../../services/http-client'
 import Skeleton from 'react-loading-skeleton'
 import { Alert } from '../Shared'
 import { useToast, ToastType } from '../../contexts/ToastContext'
@@ -13,14 +13,10 @@ import { useToast, ToastType } from '../../contexts/ToastContext'
 import {
   ClientDetailContainer,
   DetailWrapper,
-  ActionSidebar,
   AccountInformation,
   DetailSection,
   WidgetCodeCard,
   APIKeyCard,
-  SubMenus,
-  MenuItemWrapper,
-  MenuItem,
   ActionButtonGroup
 } from './styles'
 
@@ -115,8 +111,14 @@ export const ClientDetail = (props) => {
                 <p>Name: {clientState.loading ? <Skeleton width={100} height={17} /> : clientState.result?.full_name}</p>
                 <p>Email: {clientState.loading ? <Skeleton width={150} height={17} /> : clientState.result?.email}</p>
               </DetailSection>
+              <Button
+                color='primary'
+                onClick={() => navigate(`/clients/${apiKey}/custom-widget`)}
+              >
+                Customize Widget
+              </Button>
             </AccountInformation>
-            <DetailSection>
+            <DetailSection isBorder>
               <h3>Widget Code:</h3>
               <WidgetCodeCard>
                 {clientState?.loading ? (
@@ -135,14 +137,6 @@ export const ClientDetail = (props) => {
                   <MdcContentCopy />
                 </IconButton>
               </WidgetCodeCard>
-              <Button
-                color='primary'
-                onClick={() => navigate(`/clients/${apiKey}/custom-widget`)}
-              >
-                Customize Widget
-              </Button>
-            </DetailSection>
-            <DetailSection>
               <h3>API Key</h3>
               <APIKeyCard>
                 {clientState.loading ? (
@@ -160,27 +154,15 @@ export const ClientDetail = (props) => {
                 </IconButton>
               </APIKeyCard>
               <Button
-                color='primary'
+                outline
+                color='black'
                 onClick={() => updateClient({ 'api-key': 'REPLACE' })}
                 disabled={actionState.loading}
               >
-                Replace API key                
+                Reset API Key                
               </Button>
             </DetailSection>
-          </DetailWrapper>
-          <ActionSidebar>
-            <SubMenus>
-              <MenuItemWrapper
-                onClick={() => navigate(`/clients/${apiKey}/custom-widget`)}
-              >
-                <MenuItem>Customize WIdget</MenuItem>
-              </MenuItemWrapper>
-              <MenuItemWrapper>
-                <MenuItem
-                  onClick={() => navigate('/account-management')}
-                >Account Information</MenuItem>
-              </MenuItemWrapper>
-            </SubMenus>
+
             <ActionButtonGroup>
               <Button
                 outline
@@ -191,14 +173,14 @@ export const ClientDetail = (props) => {
                 Deactivate Client
               </Button>
               <Button
-                className='remove'
+                color='black'
                 disabled={actionState.loading}
                 onClick={() => updateClient({ status: 'DELETED' }, true)}
               >
                 Remove Client
               </Button>
             </ActionButtonGroup>
-          </ActionSidebar>
+          </DetailWrapper>
         </ClientDetailContainer>
       </MainContent>
       <Alert
