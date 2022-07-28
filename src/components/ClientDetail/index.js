@@ -170,7 +170,9 @@ export const ClientDetail = (props) => {
           </DetailWrapper>
           <ActionSidebar>
             <SubMenus>
-              <MenuItemWrapper>
+              <MenuItemWrapper
+                onClick={() => navigate(`/clients/${apiKey}/custom-widget`)}
+              >
                 <MenuItem>Customize WIdget</MenuItem>
               </MenuItemWrapper>
               <MenuItemWrapper>
