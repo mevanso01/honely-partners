@@ -2,6 +2,9 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   padding: 0 15px;
+  height: 100%;
+  position: relative;
+
   h1 {
     font-size: 24px;
     font-weight: 400;
@@ -21,6 +24,24 @@ export const Container = styled.div`
       font-size: 36px;
     }
   }
+`
+export const MainContent = styled.div`
+  filter: blur(12px);
+`
+export const ContactMessage = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 24px;
+  font-size: 18px;
 `
 export const CardsContainer = styled.div`
   margin: 30px 0 50px 0;
