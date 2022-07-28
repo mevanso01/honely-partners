@@ -78,12 +78,12 @@ export const ClientDetail = (props) => {
       } else {
         showToast(ToastType.Success, 'Updated')
       }
+      if (clientState.result?.apiKey !== response.data?.user?.api_key) {
+        navigate(`/clients/${response.data?.user?.api_key}`, { replace: true })
+      }
       setClientState({
         ...clientState,
-        result: {
-          ...clientState.result,
-          ...payload
-        }
+        result: response.data?.user
       })
     } catch (error) {
       setActionState({
