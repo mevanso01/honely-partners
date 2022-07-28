@@ -2,7 +2,6 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useTheme } from 'styled-components'
-import FaUserAlt from '@meronex/icons/fa/FaUserAlt'
 
 import {
   Container,
@@ -24,7 +23,7 @@ export const Header = () => {
           <AgentImageWrapper>
             {partner.info?.image_url ? (
               <img src={partner.info?.image_url + '?random_number=' + new Date().getTime()} alt='' />
-            ) : <FaUserAlt />}
+            ) : <span>{partner.info?.company_name}</span>}
           </AgentImageWrapper>
           <PowerdBy>
             <span>Powered by</span>

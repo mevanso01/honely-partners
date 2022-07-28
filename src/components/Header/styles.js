@@ -20,15 +20,20 @@ export const AgentImageWrapper = styled.div`
   width: 160px;
   height: 55px;
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   img {
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
 
-  svg {
-    width: 100%;
-    height: 100%;
+  span {
+    font-weight: 700;
+    font-size: 20px;
+    word-break: break-all;
+    text-align: center;
   }
 `
 export const PowerdBy = styled.div`
