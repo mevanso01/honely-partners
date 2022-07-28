@@ -16,6 +16,8 @@ import { ResultPagePreview } from './ResultPagePreview'
 import MdCheckBox from '@meronex/icons/md/MdCheckBox'
 import MdCheckBoxOutlineBlank from '@meronex/icons/md/MdCheckBoxOutlineBlank'
 import IosArrowBack from '@meronex/icons/ios/IosArrowBack'
+import MdRadioButtonUnchecked from '@meronex/icons/md/MdRadioButtonUnchecked'
+import MdRadioButtonChecked from '@meronex/icons/md/MdRadioButtonChecked'
 
 export const CustomizeWidget = (props) => {
   const{
@@ -205,12 +207,12 @@ export const CustomizeWidget = (props) => {
                         <div
                           key={i}
                           className='widget-radio-item'
-                          onClick={() => handleUpdateWidgetConfig({ font: font })}
+                          onClick={() => handleUpdateWidgetConfig({ fonts: font })}
                         >
                           {widgetConfig?.fonts === font ? (
-                            <span className='mdi mdi-radiobox-marked' />
+                            <MdRadioButtonChecked />
                           ) : (
-                            <span className='mdi mdi-radiobox-blank' />
+                            <MdRadioButtonUnchecked />
                           )}
                           <label>{font}</label>
                         </div>
