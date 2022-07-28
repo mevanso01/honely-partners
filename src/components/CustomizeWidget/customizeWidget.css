@@ -3,6 +3,20 @@
   position: relative;
   height: 100%;
 }
+.go-back-btn {
+  margin: 20px 30px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+}
+.go-back-btn:hover {
+  color: #FF9900;
+}
 .loading-animation {
   margin: 22% auto;
   max-height: 100px;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { TrinitySpinner } from 'loading-animations-react'
 import { Container, MainContent } from '../ClientsList/styles'
 import { Sidebar } from '../ClientsList/Sidebar'
@@ -14,11 +15,15 @@ import InputFormPreview from './InputFormPreview'
 import { ResultPagePreview } from './ResultPagePreview'
 import MdCheckBox from '@meronex/icons/md/MdCheckBox'
 import MdCheckBoxOutlineBlank from '@meronex/icons/md/MdCheckBoxOutlineBlank'
+import IosArrowBack from '@meronex/icons/ios/IosArrowBack'
 
 export const CustomizeWidget = (props) => {
   const{
     apiKey
   } = props
+
+  const navigate = useNavigate()
+
   const [widgetSettings, setWidgetSettings] = useState({ loading: true, loadingText: 'Loading...', settings: {}, error: null })
   const [widgetConfig, setWidgetConfig] = useState({})
   const fonts = ['Poppins', 'Times New Roman', 'Arial']
@@ -123,6 +128,13 @@ export const CustomizeWidget = (props) => {
       <Sidebar />
       <MainContent>
         <div className='widget-container'>
+          <button
+            className='go-back-btn'
+            onClick={() => navigate(-1)}
+          >
+            <IosArrowBack />
+            <span>Back</span>
+          </button>
           {widgetSettings.loading && (
             <div className='widget-loading-container'>
               <div className="loading-animation">
