@@ -7,7 +7,7 @@ export const FormContainer = styled.form`
   }
 
   > button {
-    margin: 40px 0 20px 0;
+    margin: 40px auto 20px auto;
     width: 250px;
   }
 `
