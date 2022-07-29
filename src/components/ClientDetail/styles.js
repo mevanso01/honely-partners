@@ -112,3 +112,11 @@ export const ActionButtonGroup = styled.div`
     }
   }
 `
+export const ConfirmText = styled.p`
+  margin: 0;
+
+  span {
+    font-weight: 500;
+    color: ${props => props.theme.colors.primary};
+  }
+`

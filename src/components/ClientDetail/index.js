@@ -7,7 +7,7 @@ import { Button, IconButton } from '../Shared'
 import MdcContentCopy from '@meronex/icons/mdc/MdcContentCopy'
 import { doGet, doPatch } from '../../services/http-client'
 import Skeleton from 'react-loading-skeleton'
-import { Alert } from '../Shared'
+import { Alert, Confirm } from '../Shared'
 import { useToast, ToastType } from '../../contexts/ToastContext'
 
 import {
@@ -17,7 +17,8 @@ import {
   DetailSection,
   WidgetCodeCard,
   APIKeyCard,
-  ActionButtonGroup
+  ActionButtonGroup,
+  ConfirmText
 } from './styles'
 
 export const ClientDetail = (props) => {
@@ -30,6 +31,7 @@ export const ClientDetail = (props) => {
   const [clientState, setClientState] = useState({ result: null, loading: true, error: null })
   const [actionState, setActionState] = useState({ loading: false, error: null })
   const [alertState, setAlertState] = useState({ open: false, content: [] })
+  const [confirm, setConfirm] = useState({ open: false, content: null, handleOnAccept: null })
 
   const copyToClipboard = (apiKey, isWidgetCode = false) => {
     const copyText = isWidgetCode ? `<script src="https://developers.honely.com/widget/load-script?api-key=${apiKey}"></script>` : apiKey
@@ -75,6 +77,7 @@ export const ClientDetail = (props) => {
       if (isDelete) {
         showToast(ToastType.Success, 'Deleted')
         navigate('/clients')
+        return
       } else {
         showToast(ToastType.Success, 'Updated')
       }
@@ -91,6 +94,16 @@ export const ClientDetail = (props) => {
         error: error.message
       })
     }
+  }
+
+  const handleRemoveClient = () => {
+    setConfirm({
+      open: true,
+      handleOnAccept: () => {
+        setConfirm({ ...confirm, open: false })
+        updateClient({ status: 'DELETED' }, true)
+      }
+    })
   }
 
   useEffect(() => {
@@ -182,7 +195,7 @@ export const ClientDetail = (props) => {
               <Button
                 color='black'
                 disabled={actionState.loading}
-                onClick={() => updateClient({ status: 'DELETED' }, true)}
+                onClick={() => handleRemoveClient()}
               >
                 Remove Client
               </Button>
@@ -200,6 +213,21 @@ export const ClientDetail = (props) => {
         onAccept={() => setAlertState({ open: false, content: [] })}
         closeOnBackdrop={false}
       />
+      <Confirm
+        width='700px'
+        title={'Confirm'}
+        content={confirm.content}
+        acceptText={'Delete'}
+        open={confirm.open}
+        onClose={() => setConfirm({ ...confirm, open: false })}
+        onCancel={() => setConfirm({ ...confirm, open: false })}
+        onAccept={confirm.handleOnAccept}
+        closeOnBackdrop={false}
+      >
+        <ConfirmText>
+          Client <span>{clientState.result?.full_name}</span> will be permanently deleted from your account. Would you like to delete?
+        </ConfirmText>
+      </Confirm>
     </Container>
   )
 }
