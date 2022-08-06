@@ -144,7 +144,7 @@
 .additional-input-delete-btn {
   position: absolute;
   right: -24px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   cursor: pointer;
   outline: none;
@@ -155,10 +155,15 @@
   padding: 0;
   min-width: initial;
   color: #181818;
+  font-weight: 500;
 }
 .additional-input-delete-btn:hover {
   background-color: transparent;
   color: #FF735E;
+}
+.tooltip-text {
+  margin: 0;
+  font-size: 12px;
 }
 .add-input-fields-wrapper input {
   margin: 2px 0;
@@ -181,13 +186,13 @@
 .add-item-containter .widget-block-divider {
   width: 100%;
 }
-.add-item-containter svg {
+.add-item-containter span {
   position: absolute;
   background-color: #f6f6f6;
   cursor: pointer;
   font-size: 20px;
 }
-.add-item-containter svg:hover {
+.add-item-containter span:hover {
   color: #24CB43;
 }
 .poll-field-item-container {
@@ -219,6 +224,7 @@
   padding: 0;
   min-width: initial;
   color: #181818;
+  font-weight: 500;
 }
 .poll-input-delete-btn:hover {
   background-color: transparent;

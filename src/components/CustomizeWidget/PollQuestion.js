@@ -4,6 +4,7 @@ import AiOutlinePlusCircle from '@meronex/icons/ai/AiOutlinePlusCircle';
 import MdViewHeadline from '@meronex/icons/md/MdViewHeadline';
 import MdCheckBox from '@meronex/icons/md/MdCheckBox';
 import MdCheckBoxOutlineBlank from '@meronex/icons/md/MdCheckBoxOutlineBlank';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 const PollQuestion = (props) => {
   const {
@@ -62,21 +63,19 @@ const PollQuestion = (props) => {
   }
 
   const handleAddPollOption = (order, e) => {
-    if (e.keyCode === 13 && e.target.value) {
-      const updatedPolls = widgetConfig['polls-fields'].map(item => {
-        if (item.order === order) {
-          return { ...item, options: [...item.options, e.target.value] }
-        }
-        return item
-      })
-      setWidgetConfig({
-        ...widgetConfig,
-        mode: 'CUSTOM',
-        extended: widgetConfig?.extended ?? widgetConfig.mode,
-        'polls-fields': updatedPolls
-      })
-      e.target.value = ''
-    }
+    const updatedPolls = widgetConfig['polls-fields'].map(item => {
+      if (item.order === order) {
+        return { ...item, options: [...item.options, e.target.previousElementSibling.value] }
+      }
+      return item
+    })
+    setWidgetConfig({
+      ...widgetConfig,
+      mode: 'CUSTOM',
+      extended: widgetConfig?.extended ?? widgetConfig.mode,
+      'polls-fields': updatedPolls
+    })
+    e.target.previousElementSibling.value = ''
   }
 
   let updateOptionTimeout = null
@@ -127,12 +126,19 @@ const PollQuestion = (props) => {
             defaultValue={poll.label}
             onChange={e => handleUpdateItem(poll.order, { label: e.target.value })}
           />
-          <button
-            className='poll-input-delete-btn'
-            onClick={() => handleDeletePoll(poll.order)}
+          <OverlayTrigger
+            placement='top'
+            overlay={
+              <Tooltip><p className='tooltip-text'>Delete poll field</p></Tooltip>
+            }
           >
-            x
-          </button>
+            <button
+              className='poll-input-delete-btn'
+              onClick={() => handleDeletePoll(poll.order)}
+            >
+              x
+            </button>
+          </OverlayTrigger>
         </div>
         <div className='poll-inputs-container'>
           {poll.options.map((option, index) => (
@@ -145,19 +151,38 @@ const PollQuestion = (props) => {
                 defaultValue={option}
                 onChange={e => handleUpdateOption(poll.order, index, e.target.value)}
               />
-              <button
-                className='poll-input-delete-btn'
-                onClick={() => handleDeleteOption(poll.order, index)}
+              <OverlayTrigger
+                placement='top'
+                overlay={
+                  <Tooltip><p className='tooltip-text'>Delete poll option</p></Tooltip>
+                }
               >
-                x
-              </button>
+                <button
+                  className='poll-input-delete-btn'
+                  onClick={() => handleDeleteOption(poll.order, index)}
+                >
+                  x
+                </button>
+              </OverlayTrigger>
             </div>
           ))}
           <div className='poll-question-input-wrapper'>
             <input
               className='widget-input'
-              onKeyUp={e => handleAddPollOption(poll.order, e)}
             />
+            <OverlayTrigger
+                placement='top'
+                overlay={
+                  <Tooltip><p className='tooltip-text'>Add poll option</p></Tooltip>
+                }
+              >
+                <button
+                  className='poll-input-delete-btn'
+                  onClick={e => handleAddPollOption(poll.order, e)}
+                >
+                  +
+                </button>
+              </OverlayTrigger>
           </div>
         </div>
         <div className='requirement-checkbox'>
@@ -222,9 +247,18 @@ const PollQuestion = (props) => {
       />
       <div className='add-item-containter'>
         <div className='widget-block-divider' />
-        <AiOutlinePlusCircle
-          onClick={() => handleAddPoll()}
-        />
+        <OverlayTrigger
+          placement='top'
+          overlay={
+            <Tooltip><p className='tooltip-text'>Add poll question field</p></Tooltip>
+          }
+        >
+          <span>
+            <AiOutlinePlusCircle
+              onClick={() => handleAddPoll()}
+            />
+          </span>
+        </OverlayTrigger>
       </div>
     </section>
   )

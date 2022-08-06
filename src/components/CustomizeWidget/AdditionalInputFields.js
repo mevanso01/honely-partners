@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import AiOutlinePlusCircle from '@meronex/icons/ai/AiOutlinePlusCircle';
 import MdViewHeadline from '@meronex/icons/md/MdViewHeadline';
 
@@ -85,12 +87,19 @@ const AdditionalInputFields = (props) => {
               onChange={e => handleInputChange(value.order, { placeholder: e.target.value })}
             />
           </div>
-          <button
-            className='additional-input-delete-btn'
-            onClick={() => handleDeleteInput(value.order)}
+          <OverlayTrigger
+            placement='top'
+            overlay={
+              <Tooltip><p className='tooltip-text'>Delete input field</p></Tooltip>
+            }
           >
-            X
-          </button>
+            <button
+              className='additional-input-delete-btn'
+              onClick={() => handleDeleteInput(value.order)}
+            >
+              x
+            </button>
+          </OverlayTrigger>
         </div>
         <div className='add-input-fields-divider'>
           <div className='widget-block-divider' />
@@ -159,9 +168,18 @@ const AdditionalInputFields = (props) => {
       </div>
       <div className='add-item-containter'>
         <div className='widget-block-divider' />
-        <AiOutlinePlusCircle
-          onClick={handleAddInputField}
-        />
+        <OverlayTrigger
+          placement='top'
+          overlay={
+            <Tooltip><p className='tooltip-text'>Add input field</p></Tooltip>
+          }
+        >
+          <span>
+            <AiOutlinePlusCircle
+              onClick={handleAddInputField}
+            />
+          </span>
+        </OverlayTrigger>
       </div>
     </section>
   )
