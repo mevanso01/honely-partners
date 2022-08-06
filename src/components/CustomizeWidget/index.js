@@ -58,18 +58,18 @@ export const CustomizeWidget = (props) => {
       if (response?.error) {
         throw response.error
       }
+      const _widgetConfig = { ...widgetConfig }
+      delete _widgetConfig.extended
+      setWidgetConfig(_widgetConfig)
+  
       setWidgetSettings({
         loading: false,
         settings: {
           ...widgetSettings.settings,
-          current: widgetConfig
+          current: _widgetConfig
         },
         error: null
       })
-
-      const _widgetConfig = { ...widgetConfig }
-      delete _widgetConfig.extended
-      setWidgetConfig(_widgetConfig)
     } catch (error) {
       setWidgetSettings({
         ...widgetSettings,
