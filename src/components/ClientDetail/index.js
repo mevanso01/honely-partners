@@ -171,7 +171,7 @@ export const ClientDetail = (props) => {
                   <MdcContentCopy />
                 </IconButton>
                 {widgetCodeCopied && (
-                  <Notification>Widget Code is copied to clipboard</Notification>
+                  <Notification>Copied to clipboard!</Notification>
                 )}
               </WidgetCodeCard>
               <h3>API Key</h3>
@@ -190,7 +190,7 @@ export const ClientDetail = (props) => {
                   <MdcContentCopy />
                 </IconButton>
                 {apiKeyCopied && (
-                  <Notification>API Key is copied to clipboard</Notification>
+                  <Notification>Copied to clipboard!</Notification>
                 )}
               </APIKeyCard>
               <Button

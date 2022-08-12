@@ -101,7 +101,7 @@ const slideUp = keyframes`
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(-20px);
+    transform: scale(1) translateY(-38px);
   }
 `
 export const Notification = styled.div`
@@ -112,8 +112,11 @@ export const Notification = styled.div`
   border-radius: 8px;
   padding: 10px 15px;
   font-size: 14px;
-  transform: translateY(-20px);
+  transform: translateY(-38px);
   animation: ${slideUp} 0.1s linear;
+  @media (min-width: 992px) {
+    right: -30px;
+  }
 `
 export const ActionButtonGroup = styled.div`
   display: flex;
