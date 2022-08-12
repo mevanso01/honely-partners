@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { darken } from 'polished'
 
 export const ClientDetailContainer = styled.div`
@@ -75,6 +75,7 @@ export const WidgetCodeCard = styled.div`
   margin-bottom: 30px;
   display: flex;
   max-width: 800px;
+  position: relative;
 
   p {
     flex: 1;
@@ -92,6 +93,27 @@ export const WidgetCodeCard = styled.div`
   }
 `
 export const APIKeyCard = styled(WidgetCodeCard)`
+`
+const slideUp = keyframes`
+  0% {
+    opacity: 0.5;
+    transform: scale(0.8) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(-20px);
+  }
+`
+export const Notification = styled.div`
+  position: absolute;
+  right: 20px;
+  background: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.white};
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  transform: translateY(-20px);
+  animation: ${slideUp} 0.1s linear;
 `
 export const ActionButtonGroup = styled.div`
   display: flex;

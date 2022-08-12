@@ -18,7 +18,8 @@ import {
   WidgetCodeCard,
   APIKeyCard,
   ActionButtonGroup,
-  ConfirmText
+  ConfirmText,
+  Notification
 } from './styles'
 
 export const ClientDetail = (props) => {
@@ -32,10 +33,23 @@ export const ClientDetail = (props) => {
   const [actionState, setActionState] = useState({ loading: false, error: null })
   const [alertState, setAlertState] = useState({ open: false, content: [] })
   const [confirm, setConfirm] = useState({ open: false, content: null, handleOnAccept: null })
+  const [widgetCodeCopied, setWidgetCodeCopied] = useState(false)
+  const [apiKeyCopied, setApiKeyCopied] = useState(false)
 
   const copyToClipboard = (apiKey, isWidgetCode = false) => {
     const copyText = isWidgetCode ? `<script src="https://developers.honely.com/widget/load-script?api-key=${apiKey}"></script>` : apiKey
     navigator.clipboard.writeText(copyText)
+    if (isWidgetCode) {
+      setWidgetCodeCopied(true)
+      setTimeout(() => {
+        setWidgetCodeCopied(false)
+      }, 3000)
+    } else {
+      setApiKeyCopied(true)
+      setTimeout(() => {
+        setApiKeyCopied(false)
+      }, 3000)
+    }
   }
 
   const getClient = async () => {
@@ -156,6 +170,9 @@ export const ClientDetail = (props) => {
                 >
                   <MdcContentCopy />
                 </IconButton>
+                {widgetCodeCopied && (
+                  <Notification>Widget Code is copied to clipboard</Notification>
+                )}
               </WidgetCodeCard>
               <h3>API Key</h3>
               <APIKeyCard>
@@ -172,6 +189,9 @@ export const ClientDetail = (props) => {
                 >
                   <MdcContentCopy />
                 </IconButton>
+                {apiKeyCopied && (
+                  <Notification>API Key is copied to clipboard</Notification>
+                )}
               </APIKeyCard>
               <Button
                 outline
